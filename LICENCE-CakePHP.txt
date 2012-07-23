@@ -1,0 +1,7 @@
+See: http://cakephp.org/
+
+Taken from: http://book.cakephp.org/2.0/en/installation.html ...
+CakePHP is licensed under the MIT license. 
+This means that you are free to modify, distribute and republish the source code 
+on the condition that the copyright notices are left intact. 
+You are also free to incorporate CakePHP into any Commercial or closed source application.

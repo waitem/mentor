@@ -1,0 +1,1 @@
+See: https://github.com/jquery/jquery-ui/blob/master/MIT-LICENSE.txt

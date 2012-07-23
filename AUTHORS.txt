@@ -1,0 +1,4 @@
+Authors ordered by first contribution
+A list of current team members is available at https://github.com/waitem/mentor
+
+Mark Waite <mark.a.waite@gmail.com>
