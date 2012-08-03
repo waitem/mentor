@@ -10,9 +10,15 @@
  */
 ?>
 <div class="users view">
+    <div class="left">
         <h2>
             <?php echo $title_for_layout ; ?>
         </h2>
+        </div>
+    <div class="button right noprint">
+        <a href="javascript:window.print()">Print</a>
+    </div>
+    <div class="endtwocols"></div>
 	<dl>
             <?php 
             // Don't show our own "active" status - if we aren't active

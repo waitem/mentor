@@ -617,6 +617,7 @@ p.error em {
 }
 
 /* Buttons and button links */
+.button a,
 input[type=submit],button[type=submit],
 .actions ul li a,
 .actions a {
@@ -643,12 +644,14 @@ input[type=submit],button[type=submit],
 	-webkit-user-select: none;
 	user-select: none;
 }
+.button:hover,
 .actions ul li a:hover,
 .actions a:hover {
 	background: #ededed;
 	border-color: #acacac;
 	text-decoration: none;
 }
+.button:active,
 input[type=submit]:active,button[type=submit]:active,
 .actions ul li a:active,
 .actions a:active {

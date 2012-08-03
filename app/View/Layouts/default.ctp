@@ -40,6 +40,7 @@
 		echo $this->Html->meta('icon');
 
 		echo $this->Html->css('mentor.generic');
+                echo $this->Html->css('mentor.print', null, array( 'media' => 'print'));
 
                  //load up the jQuery core
                 echo $this->Html->css('jquery-ui/jquery-ui');
