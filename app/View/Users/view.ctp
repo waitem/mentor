@@ -55,6 +55,7 @@
                     if ($user['Roletype']['name'] == 'Mentee') {
                         foreach (array(
                                     'mentee_account_info',
+                                    'mentee_chamber_account_info',
                             ) as $element) {
                         echo $this->element('Users/' . $element, 
                             array(

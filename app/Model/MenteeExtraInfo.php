@@ -138,7 +138,7 @@ class MenteeExtraInfo extends AppModel {
 			),
                         'checkDate' => array(
                             'rule' => array( 'checkDate', 'MenteeExtraInfo', 'invoiced', 'date_invoiced', 
-                                'Please enter the date that the invoice was sent'),
+                                'Please enter the date that the mentee invoice was sent'),
                             // If this isn't here, the checkbox becomes "required" for some reason ...
                             'allowEmpty' => true,                            
                         ),
@@ -157,7 +157,7 @@ class MenteeExtraInfo extends AppModel {
                         ),
                         'notChecked' => array(
                             'rule' => array( 'notChecked', 'MenteeExtraInfo', 'invoiced', 'date_invoiced', 
-                                'Please check the "Account sent out" box if the mentee has been invoiced. Or leave the "Date Invoiced" field empty if not.'),
+                                'Please check the "Mentee invoice sent" box if the mentee has been invoiced. Or leave the "Date mentee invoice sent" field empty if not.'),
                         )
 		),
 		'payment_received' => array(
@@ -172,7 +172,7 @@ class MenteeExtraInfo extends AppModel {
 			),
                         'checkDate' => array(
                             'rule' => array( 'checkDate', 'MenteeExtraInfo', 'payment_received', 'date_payment_received', 
-                                'Please enter the date that the payment was received'),
+                                'Please enter the date that the mentee invoice was paid'),
                             // If this isn't here, the checkbox becomes "required" for some reason ...
                             'allowEmpty' => true,                            
                         ),
@@ -192,7 +192,77 @@ class MenteeExtraInfo extends AppModel {
                         ),
                         'notChecked' => array(
                             'rule' => array( 'notChecked', 'MenteeExtraInfo', 'payment_received', 'date_payment_received', 
-                                'Please check the "Payment received" box if the invoice has been paid. Or leave the "Date Payment Received" field empty if not.'),
+                                'Please check the "Mentee invoice paid" box if the mentee invoice has been paid. Or leave the "Date mentee invoice paid" field empty if not.'),
+                            ),
+		),
+		'coordinator_invoice_sent' => array(
+			'boolean' => array(
+				'rule' => array('boolean'),
+				//'message' => 'Your custom message here',
+                                'allowEmpty' => true,
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+                        'checkDate' => array(
+                            'rule' => array( 'checkDate', 'MenteeExtraInfo', 'coordinator_invoice_sent', 'date_coordinator_invoice_sent', 
+                                'Please enter the date that the coordinator invoice was sent to'),
+                            // If this isn't here, the checkbox becomes "required" for some reason ...
+                            'allowEmpty' => true,                            
+                        ),
+		),
+		'date_coordinator_invoice_sent' => array(
+			'date' => array(
+				'rule' => array('date'),
+				//'message' => 'Your custom message here',
+                                'allowEmpty' => true,
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+                        'notInFuture' => array(
+                            'rule' => array( 'dateNotInFuture', 'date_coordinator_invoice_sent'),                            
+                        ),
+                        'notChecked' => array(
+                            'rule' => array( 'notChecked', 'MenteeExtraInfo', 'coordinator_invoice_sent', 'date_coordinator_invoice_sent', 
+                                'Please check the "Coordinator invoice sent" box if the invoice has been sent. Or leave the "Date coordinator invoice sent" field empty if not.'),
+                            ),
+		),
+		'balance_paid' => array(
+			'boolean' => array(
+				'rule' => array('boolean'),
+				//'message' => 'Your custom message here',
+                                'allowEmpty' => true,
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+                        'checkDate' => array(
+                            'rule' => array( 'checkDate', 'MenteeExtraInfo', 'balance_paid', 'date_balance_paid', 
+                                'Please enter the date that the balance of the coordinator invoice was paid'),
+                            // If this isn't here, the checkbox becomes "required" for some reason ...
+                            'allowEmpty' => true,                            
+                        ),
+		),
+		'date_balance_paid' => array(
+			'date' => array(
+				'rule' => array('date'),
+				//'message' => 'Your custom message here',
+                                'allowEmpty' => true,
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+                        'notInFuture' => array(
+                            'rule' => array( 'dateNotInFuture', 'date_balance_paid'),                            
+                        ),
+                        'notChecked' => array(
+                            'rule' => array( 'notChecked', 'MenteeExtraInfo', 'balance_paid', 'date_balance_paid', 
+                                'Please check the "Balance paid" box if the balance of the coordinator invoice has been paid. Or leave the "Date balance paid" field empty if not.'),
                             ),
 		),
 		'created' => array(

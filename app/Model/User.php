@@ -299,7 +299,7 @@ class User extends AppModel {
             
         }
 
-        public function getChildPaginate($action, $myUserId, $myParentId, $myTenantId, $myRoletypeId, $myRoletypeName, $active) {
+        public function getChildPaginate($action, $myUserId, $myParentId, $myTenantId, $myRoletypeId, $myRoletypeName, $active, $paid) {
             
             if ($action == 'list_mentees') {
                return array(
@@ -309,6 +309,38 @@ class User extends AppModel {
                    'User.roletype_id' => 5,
                    'User.active' => $active,
                );
+            } elseif ($action == 'list_accounts') {
+                if ($paid) {
+                   return array(
+                       // Same tenant
+                       'User.tenant_id' => $myTenantId,
+                       // only mentees
+                       'User.roletype_id' => 5,
+                       'User.active' => $active,
+                       'MenteeExtraInfo.invoiced' => 1,
+                       'MenteeExtraInfo.payment_received' => 1,
+                       'MenteeExtraInfo.coordinator_invoice_sent' => 1,
+                       'MenteeExtraInfo.balance_paid' => 1,
+                   );
+                } else {
+                   return array(
+                       // Same tenant
+                       'User.tenant_id' => $myTenantId,
+                       // only mentees
+                       'User.roletype_id' => 5,
+                       'User.active' => $active,
+                       'OR' => array(
+                               'MenteeExtraInfo.invoiced' => 0,
+                               'MenteeExtraInfo.payment_received' => 0,
+                               'MenteeExtraInfo.coordinator_invoice_sent' => 0,
+                               'MenteeExtraInfo.date_balance_paid' => 0,
+                               'MenteeExtraInfo.invoiced' => null,
+                               'MenteeExtraInfo.payment_received' => null,
+                               'MenteeExtraInfo.coordinator_invoice_sent' => null,
+                               'MenteeExtraInfo.date_balance_paid' => null,
+                           )
+                   );
+                }
             } elseif ($action == 'list_mentors') {
                return array(
                    // Same tenant

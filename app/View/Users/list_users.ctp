@@ -26,13 +26,29 @@
                 $parentLabel = 'Mentor';
                 foreach (array(
                         'mentee_date_joined', 
-                        'mentee_account_info',
+                        /* 'mentee_account_info', */
                 ) as $element) {
                 echo $this->element('Users/' . $element, 
                     array(
                         'view' => 'list_header',
+                        'htmlHeader' => 'th',
+                        'htmlDetail' => 'td',
                         )
                     );
+                }
+                if (array_key_exists('paid', $this->params['named']) ) {
+                    foreach (array(
+                            'mentee_account_info',
+                            'mentee_chamber_account_info'
+                    ) as $element) {
+                    echo $this->element('Users/' . $element, 
+                        array(
+                            'view' => 'list_header',
+                            'htmlHeader' => 'th',
+                            'htmlDetail' => 'td',
+                            )
+                        );
+                    }
                 }
             } elseif ($roletype == 'Mentor') {
                 $parentLabel = 'Coordinator';
@@ -70,15 +86,33 @@
                 if ($roletype == 'Mentee') {
                 foreach (array(
                         'mentee_date_joined', 
-                        'mentee_account_info',
+                        /* 'mentee_account_info', */
                     ) as $element) {
                 echo $this->element('Users/' . $element,
                     array(
                         'user' => $user,
                         'view' => 'list_detail',
+                        'htmlHeader' => 'th',
+                        'htmlDetail' => 'td',
                         'newRoletypeName' => $user['Roletype']['name']
                         )
                     );
+                    }
+                    if (array_key_exists('paid', $this->params['named']) ) {
+                        foreach (array(
+                                'mentee_account_info',
+                                'mentee_chamber_account_info'
+                            ) as $element) {
+                        echo $this->element('Users/' . $element,
+                            array(
+                                'user' => $user,
+                                'view' => 'list_detail',
+                                'htmlHeader' => 'th',
+                                'htmlDetail' => 'td',
+                                'newRoletypeName' => $user['Roletype']['name']
+                                )
+                            );
+                            }                        
                     }
                 } elseif ($roletype == 'Mentor') {
                 foreach (array(
@@ -149,6 +183,11 @@
                             array('controller' => 'users', 'action' => 'list_' . strtolower($roletype) . 's', 'email' => 'true')); ?></li>
                     <?php endif; ?>
                     <?php if ($roletype == 'Mentee'): ?>
+                            <?php if (array_key_exists('paid', $this->params['named']) && $this->params['named']['paid'] == 'false'): ?>
+                                <li><?php echo $this->Html->link(__('Mentee Accounts Paid'), array('controller' => 'users', 'action' => 'list_accounts', 'paid' =>  'true')); ?></li>
+                            <?php else: ?>
+                                <li><?php echo $this->Html->link(__('Mentee Accounts Unpaid'), array('controller' => 'users', 'action' => 'list_accounts', 'paid' =>  'false')); ?></li>
+                            <?php endif; ?>
                     <li><?php echo $this->Html->link(__('Mentee Surveys'), array('controller' => 'mentee_surveys', 'action' => 'index')); ?></li>
                     <?php endif; ?>
                     

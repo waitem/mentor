@@ -37,18 +37,23 @@
                 ?>
                 <div id="tabs">
                     <ul>
-                    <li><a href="#tabs-1">Personal details</a></li>
+                    <li><a href="#tabs-10">Personal details</a></li>
                     <?php if (in_array($this->action, array('add_admin', 'add_coordinator', 'add_mentor', 'add_mentee'))): ?>
-                    <li><a href="#tabs-2">Password</a></li>
+                    <li><a href="#tabs-20">Password</a></li>
                     <?php endif; ?>
                     <?php 
                     // only Mentors and Mentees have extra info
                     if (in_array($user['User']['roletype_id'], array(MENTOR, MENTEE))) : ?>
-                    <li><a href="#tabs-3"><?php echo $newRoletypeName . ' data'?></a></li>
+                    <li><a href="#tabs-30"><?php echo $newRoletypeName . ' data'?></a></li>
                     <?php endif; ?>
-                    <li><a href="#tabs-4">Public profile</a></li>
+                    <?php // Extra tab for mentee accounnt info
+                    if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) )  &&
+                        $user['User']['roletype_id'] == MENTEE ) : ?>
+                    <li><a href="#tabs-40">Mentee Account</a></li>
+                    <?php endif; ?>
+                    <li><a href="#tabs-50">Public profile</a></li>
                     </ul>
-                <div id="tabs-1" class="tab">
+                <div id="tabs-10" class="tab">
                 <div class="left twocols">
                 <?php
                 // Only a superadmin can change their own Tenant (at the moment ...)
@@ -91,7 +96,7 @@
                 <div class="endtwocols"></div> 
                 </div>  <?php // personal details ?>
                 <?php if (in_array($this->action, array('add_admin', 'add_coordinator', 'add_mentor', 'add_mentee'))) {
-                    echo '<div id="tabs-2" class="tab">';
+                    echo '<div id="tabs-20" class="tab">';
                     echo $this->Form->input('new_password',array('type'=>'password'));
                     // Additional field for password verification...
                     echo $this->Form->input('password_confirmation',array('type'=>'password'));
@@ -101,7 +106,7 @@
                 <?php
                 // only Mentors and Mentees have extra info
                 if (in_array($user['User']['roletype_id'], array(MENTOR, MENTEE))) {
-                    echo '<div id="tabs-3" class="tab">';
+                    echo '<div id="tabs-30" class="tab">';
                     echo '<div class="left twocols">';
                 }
                 if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) ) ) {
@@ -169,11 +174,6 @@
                                     'view' => 'edit',
                                     )
                                 );
-                            echo $this->element('Users/mentee_account_info', 
-                                array(
-                                    'view' => 'edit',
-                                    )
-                                );
                         }
                 }
                 if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) ) ) {
@@ -198,7 +198,30 @@
                         echo '<div class="endtwocols"></div>';
                         echo '</div>';
                 }
-                echo '<div id="tabs-4" class="tab">';
+                // Mentee account info
+                if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) )  &&
+                        $user['User']['roletype_id'] == MENTEE ) {
+                    echo '<div id="tabs-40" class="tab">';
+                    echo '<div class="left twocols">';
+                    echo $this->element('Users/mentee_account_info', 
+                        array(
+                            'view' => 'edit',
+                            )
+                        );
+                    echo '</div>';
+                    echo '<div class="right twocols">';
+                    echo $this->element('Users/mentee_chamber_account_info', 
+                        array(
+                            'view' => 'edit',
+                            )
+                        );                    
+                    echo '</div>';
+                    // the next div is needed to put the above "floating" left
+                    //and right column divs back in the enclosing (tab) div 
+                    echo '<div class="endtwocols"></div>';
+                    echo '</div>';
+                }
+                echo '<div id="tabs-50" class="tab">';
                 echo $this->Form->input('Profile.id');
                 echo $this->Form->input('Profile.notes', array('label' => false,'class' => 'profile'));
                 echo "</div>";

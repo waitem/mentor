@@ -45,7 +45,7 @@ class UsersController extends AppController {
                 return false;
               }
               // Only allow Superadmins, Admins and Coordinators to add users
-          } elseif ( in_array($this->action, array( 'add_mentor', 'add_mentee', 'list_mentees', 'list_mentors' ))) {
+          } elseif ( in_array($this->action, array( 'add_mentor', 'add_mentee', 'list_mentees', 'list_mentors', 'list_accounts' ))) {
               if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) ) ) {
                     return true;
               } else {
@@ -178,9 +178,14 @@ class UsersController extends AppController {
             } else {
                 $active = 1;
             }
+            if (array_key_exists('paid', $this->params['named']) && $this->params['named']['paid'] == 'false') {
+                $paid = 0;
+            } else {
+                $paid = 1;
+            }
             $this->set('users', 
                     $this->paginate('User', 
-                        User::getChildPaginate($this->action, $myUserId, $myParentId, $myTenantId, $myRoletypeId, $myRoletypeName, $active)
+                        User::getChildPaginate($this->action, $myUserId, $myParentId, $myTenantId, $myRoletypeId, $myRoletypeName, $active, $paid)
                             // + array( 'order' => $sortOrder)
                             )
                     );
@@ -199,6 +204,14 @@ class UsersController extends AppController {
             } elseif (array_key_exists('email', $this->params['named']) && $this->params['named']['email'] == 'true') {
                 $title = 'Email ' . $roletype . 's';
                 $view = 'email_users';   
+            } elseif ($this->action == 'list_accounts') {
+                $title = 'Mentee Accounts ';
+                if ($paid) {
+                    $title = $title . 'Paid';
+                } else {
+                    $title = $title . 'Unpaid';
+                }
+                $view = 'list_accounts';   
             }
             $this->set('title_for_layout', $title);
             $this->render($view);
@@ -223,6 +236,12 @@ class UsersController extends AppController {
 	}
         
         public function list_mentees() {
+
+            $this->list_users($this->action, 'Mentee', array( 'MenteeExtraInfo.date_joined' => 'asc'));
+
+	}
+        
+        public function list_accounts() {
 
             $this->list_users($this->action, 'Mentee', array( 'MenteeExtraInfo.date_joined' => 'asc'));
 
