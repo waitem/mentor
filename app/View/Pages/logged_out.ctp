@@ -14,10 +14,16 @@
 <p>Thank you for using the Business Mentors Data Management System</p>
 
 <p>You have now been successfully logged out</p>
+<p>&nbsp;</p>
+<p>This project has been assisted through the Sunshine Coast Council Grants Program.</p>
 
-<p>We are grateful for the support given to us by our sponsors:</p>
+<?php echo $this->Html->link( 
+        $this->Html->image('sponsors/scc.jpg', array('class' => 'sponsorimage')), 'http://www.sunshinecoast.qld.gov.au/',
+        array('target' => '_blank', 'escape' => false)); ?>
+
+<p>&nbsp;</p>
+<p>We are also grateful for the support given to us by our sponsors:</p>
 
 <p><?php echo $this->element('Pages/sponsors', array('view' => 'edit')); ?></p>
 
-<p></p>
 </div>
