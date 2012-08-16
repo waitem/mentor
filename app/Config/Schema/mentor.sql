@@ -88,6 +88,8 @@ CREATE  TABLE IF NOT EXISTS `mentee_extra_info` (
   `date_statement_of_purpose_sent` DATE NULL ,
   `waiver_form_signed` TINYINT(1) NULL ,
   `date_waiver_form_signed` DATE NULL ,
+  `signed_on_to_chamber` TINYINT(1) NULL ,
+  `date_signed_on_to_chamber` DATETIME NULL ,
   `invoiced` TINYINT(1) NULL ,
   `date_invoiced` DATE NULL ,
   `payment_received` TINYINT(1) NULL ,
@@ -183,6 +185,20 @@ CREATE  TABLE IF NOT EXISTS `user_addresses` (
   `suburb` VARCHAR(100) NULL ,
   `state` VARCHAR(30) NULL ,
   `postcode` VARCHAR(10) NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `user_notes`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `user_notes` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `user_id` INT NOT NULL ,
+  `notes` TEXT NULL ,
+  `created` DATETIME NULL ,
+  `modified` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
 ENGINE = InnoDB;

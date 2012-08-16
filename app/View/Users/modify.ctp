@@ -174,6 +174,11 @@
                                     'view' => 'edit',
                                     )
                                 );
+                            echo $this->element('Users/mentee_signed_on_to_chamber',
+                                array(
+                                    'view' => 'edit',
+                                    )
+                                );
                         }
                 }
                 if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) ) ) {

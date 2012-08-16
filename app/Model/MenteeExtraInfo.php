@@ -81,6 +81,40 @@ class MenteeExtraInfo extends AppModel {
                             'rule' => array( 'notChecked', 'MenteeExtraInfo', 'waiver_form_signed', 'date_waiver_form_signed', 
                                 'Please check the "Waiver form signed" box if the waiver form has been signed. Or leave the "Date Waiver Form Signed" field empty if not.'),
                             ),
+		),
+                'signed_on_to_chamber' => array(
+			'boolean' => array(
+				'rule' => array('boolean'),
+				//'message' => 'Your custom message here',
+                                'allowEmpty' => true,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+                        'checkDate' => array(
+                            'rule' => array( 'checkDate', 'MenteeExtraInfo', 'signed_on_to_chamber', 'date_signed_on_to_chamber', 
+                                'Please enter the date that the mentee signed on to Chamber'),
+                            // If this isn't here, the checkbox becomes "required" for some reason ...
+                            'allowEmpty' => true,
+                        ),
+		),
+		'date_signed_on_to_chamber' => array(
+			'date' => array(
+				'rule' => array('date'),
+				//'message' => 'Your custom message here',
+                                'allowEmpty' => true,
+				//'allowEmpty' => false,
+				'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+                        'notInFuture' => array(
+                            'rule' => array( 'dateNotInFuture', 'date_signed_on_to_chamber'),                            
+                        ),
+                        'notChecked' => array(
+                            'rule' => array( 'notChecked', 'MenteeExtraInfo', 'signed_on_to_chamber', 'date_signed_on_to_chamber', 
+                                'Please check the "Signed on to chamber" box if the mentee has signed on to Chamber. Or leave the "Date signed on to Chamber" field empty if not.'),
+                            ),
 		),            
                 'statement_of_purpose_sent' => array(
 			'boolean' => array(
