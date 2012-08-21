@@ -81,9 +81,11 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `mentee_extra_info` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `user_id` INT NOT NULL ,
+  `where_did_they_hear_about_us` VARCHAR(100) NULL ,
   `date_joined` DATE NULL ,
   `company_name` VARCHAR(100) NULL ,
   `company_web_site` VARCHAR(100) NULL ,
+  `additional_info` VARCHAR(500) NULL ,
   `statement_of_purpose_sent` TINYINT(1) NULL ,
   `date_statement_of_purpose_sent` DATE NULL ,
   `waiver_form_signed` TINYINT(1) NULL ,
@@ -185,20 +187,6 @@ CREATE  TABLE IF NOT EXISTS `user_addresses` (
   `suburb` VARCHAR(100) NULL ,
   `state` VARCHAR(30) NULL ,
   `postcode` VARCHAR(10) NULL ,
-  PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `user_notes`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `user_notes` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `user_id` INT NOT NULL ,
-  `notes` TEXT NULL ,
-  `created` DATETIME NULL ,
-  `modified` DATETIME NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
 ENGINE = InnoDB;

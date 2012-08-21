@@ -15,9 +15,6 @@
         $this->Html->image('sponsors/bones_murray.png', array('class' => 'sponsorimage')), 'https://www.google.com.au/#hl=en&q=bones+murray+plumbing',
         array('target' => '_blank', 'escape' => false));
     echo $this->Html->link( 
-        $this->Html->image('sponsors/gqb.png', array('class' => 'sponsorimage')), 'http://germanqualitybookkeeping.com.au',
-        array('target' => '_blank', 'escape' => false));
-    echo $this->Html->link( 
         $this->Html->image('sponsors/holmans.png', array('class' => 'sponsorimage')), 'http://holmans.com.au',
         array('target' => '_blank', 'escape' => false));
     echo $this->Html->link( 

@@ -11,7 +11,7 @@
 ?>
 <div class="fullscreen">
 <p>&nbsp;</p>
-<p>Thank you for using the Business Mentors Data Management System</p>
+<p>Thank you for using the Business Mentors Web Application</p>
 
 <p>You have now been successfully logged out</p>
 <p>&nbsp;</p>

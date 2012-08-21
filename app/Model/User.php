@@ -466,13 +466,6 @@ class User extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-                'UserNote' => array(
-			'className' => 'UserNote',
-			'foreignKey' => 'user_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
                 'UserAddress' => array(
 			'className' => 'UserAddress',
 			'foreignKey' => 'user_id',

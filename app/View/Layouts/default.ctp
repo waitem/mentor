@@ -32,7 +32,7 @@
             <?php if ($this->Session->check('Tenant.name')): ?>
                 <?php echo SessionHelper::read('Tenant.name'). __(' Business Mentors') ; ?>
             <?php else: ?>
-                <?php echo __('Business Mentors Data Management System'); ?>
+                <?php echo __('Business Mentors Web Application'); ?>
             <?php endif; ?>
             <?php echo ': ' . $title_for_layout; ?>
 	</title>
@@ -54,13 +54,13 @@
 	?>
 </head>
 <body>
-    <!-- This software program is Copyright (c) 2012, IT MaD  -->
+    <!-- This software program is Copyright (c) 2012 Noosa Chamber of Commerce and Industry  -->
 	<div id="container">
 		<div id="header" class="left">
                     <h1><?php if ($this->Session->check('Tenant.name')): ?>
                         <?php echo $this->Session->read('Tenant.name'). ' ' . __('Business Mentors') ; ?>
                         <?php else: ?>
-                        <?php echo __('Business Mentors Data Management System'); ?>
+                        <?php echo __('Business Mentors Web Application'); ?>
                     <?php endif; ?></h1>
                 </div>
                 

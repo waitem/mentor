@@ -9,7 +9,7 @@
  * 
  */
 ?>
-<h2>Welcome to the Business Mentors Data Management System</h2>
+<h2>Welcome to the Business Mentors Web Application</h2>
 
 <p><?php echo $this->Html->link(__('Go to login screen'), array('controller' => 'users', 'action' => 'login')); ?>
 </p>
