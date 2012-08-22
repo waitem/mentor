@@ -265,6 +265,18 @@ dd .profile {
     overflow-y:scroll;
 }
 
+/* User's profile */
+.additional_info {
+    height:150px;
+    /* Put a vertical scroll bar in */
+    overflow-y:scroll;
+}
+dd .additional_info {
+    height:80px;
+    /* Put a vertical scroll bar in */
+    overflow-y:scroll;
+}
+
 /* SQL log */
 .cake-sql-log {
 	background: #fff;

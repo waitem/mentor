@@ -42,17 +42,28 @@
                     <li><a href="#tabs-20">Password</a></li>
                     <?php endif; ?>
                     <?php 
-                    // only Mentors and Mentees have extra info
-                    if (in_array($user['User']['roletype_id'], array(MENTOR, MENTEE))) : ?>
-                    <li><a href="#tabs-30"><?php echo $newRoletypeName . ' data'?></a></li>
-                    <?php endif; ?>
-                    <?php // Extra tab for mentee accounnt info
-                    if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) )  &&
-                        $user['User']['roletype_id'] == MENTEE ) : ?>
-                    <li><a href="#tabs-40">Mentee Account</a></li>
+                    // only Mentees have extra info
+                    if ($user['User']['roletype_id'] == MENTEE ) : ?>
+                    <li><a href="#tabs-25"><?php echo 'Other info'?></a></li>
                     <?php endif; ?>
                     <li><a href="#tabs-50">Public profile</a></li>
+                    <?php  // ADMIN TAB
+                    // only Mentors and Mentees have an Admin tab
+                    // which is only visible to Coordinators and above
+                    // And the mentor can see selected fields of his own Admin tab
+                    if ((in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) )  &&
+                                            in_array($user['User']['roletype_id'], array(MENTOR, MENTEE))) ||
+                        ($user['User']['roletype_id'] == MENTOR && 
+                                         $myUserId == $user['User']['id']) ) : ?>
+                    <li><a href="#tabs-30"><?php echo 'Administration'?></a></li>
+                    <?php endif; ?>
+                    <?php // Extra tab for mentee account info
+                    if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) )  &&
+                        $user['User']['roletype_id'] == MENTEE ) : ?>
+                    <li><a href="#tabs-40">Accounting</a></li>
+                    <?php endif; ?>
                     </ul>
+                <?php // PERSONAL DETAILS ?>
                 <div id="tabs-10" class="tab">
                 <div class="left twocols">
                 <?php
@@ -103,15 +114,61 @@
                     echo "</div>";
                 }
                 ?>
+                <?php // MENTEE INFO ?>
                 <?php
-                // only Mentors and Mentees have extra info
-                if (in_array($user['User']['roletype_id'], array(MENTOR, MENTEE))) {
+                // Mentees have extra info
+                if ($user['User']['roletype_id'] == MENTEE) {
+                    echo '<div id="tabs-25" class="tab">';
+                    // Left column
+                    echo '<div class="left twocols">';
+                    if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator', 'Mentor' ) ) 
+                            // The mentee can edit their company
+                            || $myUserId == $user['User']['id']) {
+                        echo $this->element('Users/mentee_company', 
+                            array(
+                                'view' => 'edit',
+                                )
+                            );
+                    }
+                    echo '</div>';
+                    
+                    // Right column
+                    echo '<div class="right twocols">';
+                    // The check for the correct permissions is done within the element
+                    echo $this->element('Users/mentee_additional_info', 
+                        array(
+                            'view' => 'edit',
+                            )
+                        );
+                    echo '</div>';
+                    // the next div is needed to put the above "floating" left
+                    //and right column divs back in the enclosing (tab) div 
+                    echo '<div class="endtwocols"></div>';
+                    echo '</div>';
+                }
+                ?>
+                <?php  // PROFILE TAB
+                echo '<div id="tabs-50" class="tab">';
+                echo $this->Form->input('Profile.id');
+                echo $this->Form->input('Profile.notes', array('label' => false, 'class' => 'profile'));
+                echo "</div>";
+                ?>
+                <?php // ADMIN TAB 
+                if ((in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) )  &&
+                                            in_array($user['User']['roletype_id'], array(MENTOR, MENTEE))) ||
+                        ($user['User']['roletype_id'] == MENTOR && 
+                                         $myUserId == $user['User']['id']) ) {
                     echo '<div id="tabs-30" class="tab">';
                     echo '<div class="left twocols">';
-                }
+
                 if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) ) ) {
                     // Instead of $user['Roletype']['name'] we use $user['User']['roletype_id']
                     if ($user['User']['roletype_id'] == MENTEE) {
+                        echo $this->element('Users/mentee_hear_about', 
+                            array(
+                                'view' => 'edit',
+                                )
+                            );
                         echo $this->element('Users/mentee_date_joined', 
                             array(
                                 'view' => 'edit',
@@ -145,17 +202,6 @@
                                     )
                                 );
                         }
-                }
-                if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator', 'Mentor' ) ) 
-                        // The mentee can edit their company
-                        || $myUserId == $user['User']['id']) {
-                    if ($user['User']['roletype_id'] == MENTEE) {
-                        echo $this->element('Users/mentee_company', 
-                            array(
-                                'view' => 'edit',
-                                )
-                            );
-                    }
                 }
                 // only Mentors and Mentees have extra info
                 if (in_array($user['User']['roletype_id'], array(MENTOR, MENTEE))) {                        
@@ -195,8 +241,7 @@
                                 );
                     }
                 }
-                // only Mentors and Mentees have extra info
-                if (in_array($user['User']['roletype_id'], array(MENTOR, MENTEE))) {                        
+                
                         echo '</div>';
                         // the next div is needed to put the above "floating" left
                         //and right column divs back in the enclosing (tab) div 
@@ -226,10 +271,6 @@
                     echo '<div class="endtwocols"></div>';
                     echo '</div>';
                 }
-                echo '<div id="tabs-50" class="tab">';
-                echo $this->Form->input('Profile.id');
-                echo $this->Form->input('Profile.notes', array('label' => false,'class' => 'profile'));
-                echo "</div>";
                 ?>
                 </div>   <?php // end of tabs div ?>
 	</fieldset>

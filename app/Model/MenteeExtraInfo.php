@@ -35,6 +35,16 @@ class MenteeExtraInfo extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+                'where_did_they_hear_about_us' => array(
+			'length' => array(
+				'rule' => array('maxLength', 100),
+                                'message' => 'Please enter a maximum of 100 characters in this field',
+				'allowEmpty' => true,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),            
 		'date_joined' => array(
 			'date' => array(
 				'rule' => array('date'),
@@ -154,6 +164,16 @@ class MenteeExtraInfo extends AppModel {
 			'url' => array(
 				'rule' => 'url',
                                 'message' => 'Please enter a valid website address',
+				'allowEmpty' => true,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+                'additional_info' => array(
+			'length' => array(
+				'rule' => array('maxLength', 500),
+                                'message' => 'Please enter a maximum of 500 characters (approx 12 lines) in this field',
 				'allowEmpty' => true,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule

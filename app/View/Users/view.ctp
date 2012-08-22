@@ -36,6 +36,7 @@
                 if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator','Mentor' ) ) ) {
                     if ($user['Roletype']['name'] == 'Mentee') {
                         foreach (array(
+                                    'mentee_hear_about',
                                     'mentee_date_joined',
                                     'mentee_statement_of_purpose_sent',
                                     'mentee_waiver_form_signed',
@@ -112,7 +113,12 @@
                 <?php echo $this->element('Users/mentee_company',
                     array(
                         'view' => 'view',
-                        'htmlType' => 'dd'
+                        )
+                    );
+                ?>
+                <?php echo $this->element('Users/mentee_additional_info',
+                    array(
+                        'view' => 'view',
                         )
                     );
                 ?>    

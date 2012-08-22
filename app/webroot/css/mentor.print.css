@@ -59,6 +59,17 @@ dd .profile {
     overflow-y:visible;
 }
 
+.additional_info {
+    height:auto;
+    /* Put a vertical scroll bar in */
+    overflow-y: visible;
+}
+dd .additional_info {
+    height:auto;
+    /* Put a vertical scroll bar in */
+    overflow-y:visible;
+}
+
 .noprint {
     display:none;
 }
