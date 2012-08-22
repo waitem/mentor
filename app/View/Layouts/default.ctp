@@ -32,7 +32,7 @@
             <?php if ($this->Session->check('Tenant.name')): ?>
                 <?php echo SessionHelper::read('Tenant.name'). __(' Business Mentors') ; ?>
             <?php else: ?>
-                <?php echo __('Business Mentors Web Application'); ?>
+                <?php echo __('Mentoring Application'); ?>
             <?php endif; ?>
             <?php echo ': ' . $title_for_layout; ?>
 	</title>
@@ -60,7 +60,7 @@
                     <h1><?php if ($this->Session->check('Tenant.name')): ?>
                         <?php echo $this->Session->read('Tenant.name'). ' ' . __('Business Mentors') ; ?>
                         <?php else: ?>
-                        <?php echo __('Business Mentors Web Application'); ?>
+                        <?php echo __('Mentoring Application'); ?>
                     <?php endif; ?></h1>
                 </div>
                 
