@@ -183,12 +183,25 @@ class UsersController extends AppController {
             } else {
                 $paid = 1;
             }
+            
+            // If we want to produce a list of e-mail addresses, then don't use pagination
+            if (array_key_exists('email', $this->params['named']) && $this->params['named']['email'] == 'true') {
+                $this->set('users', 
+                    $this->User->find('all', 
+                            array(
+                                'conditions' => User::getChildPaginate($this->action, $myUserId, $myParentId, $myTenantId, $myRoletypeId, $myRoletypeName, $active, $paid)
+                                )
+                            // + array( 'order' => $sortOrder)
+                            )
+                    );
+            } else {
             $this->set('users', 
                     $this->paginate('User', 
                         User::getChildPaginate($this->action, $myUserId, $myParentId, $myTenantId, $myRoletypeId, $myRoletypeName, $active, $paid)
                             // + array( 'order' => $sortOrder)
                             )
                     );
+            }
             // Default title for view ...
             $title = $roletype . 's';
             if (! $active) {
