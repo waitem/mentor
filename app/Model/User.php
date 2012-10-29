@@ -233,6 +233,13 @@ class User extends AppModel {
         
         public function canBeAccessedBy($userId, $action, $myUserId, $myParentId, $myTenantId, $myRoletypeId, $myRoletypeName, $myParentUserParentId ) {
             
+            # If any parameters not set, assume that we are not correctly logged in
+            if ($myUserId == null 
+                    or $myTenantId == null
+                    or $myRoletypeId == null ) {
+                return false;                
+            }
+            
             $userDetails = User::getUserDetails( $userId);            
             
             // 
