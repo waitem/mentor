@@ -26,15 +26,23 @@ class UsersController extends AppController {
         
         public function isAuthorized($user) { 
             
+            // Everyone must be allowed to login!
+          if (in_array($this->action, array( 'login'))) {
+              return true;
+          }
+            
             $myUserId = $this->Session->read('Auth.User.id');
+            // If we are not logged in, then we are not authorised to do anything else
+            if ($myUserId == null) {
+                return false;
+            }
             $myTenantId = $this->Session->read('Auth.User.tenant_id');
             $myRoletypeId = $this->Session->read('Auth.User.roletype_id');
             $myRoletypeName = $this->Session->read('Roletype.name');
             $myParentId = $this->Session->read('Auth.User.parent_id');
             $myParentUserParentId = $this->Session->read('ParentUser.parent_id');
-            
 
-          if (in_array($this->action, array( 'login', 'logout', 'dashboard'))) {
+          if (in_array($this->action, array( 'logout', 'dashboard'))) {
               return true;
               // Mentees are not allowed to view the profiles
           } elseif ( $this->action == 'index') {
@@ -76,6 +84,7 @@ class UsersController extends AppController {
           } elseif (in_array($this->action, array('view_profile', 'view', 'edit', 'modify', 'change_password'))) {
             $userId = $this->request->params['pass'][0];   
             return $this->User->canBeAccessedBy($userId, $this->action, $myUserId, $myParentId, $myTenantId, $myRoletypeId, $myRoletypeName, $myParentUserParentId ); 
+            
           }
           
           // Otherwise take the default authorisation
@@ -97,7 +106,8 @@ class UsersController extends AppController {
                                 // Oh dear, we don't have a good version of cake
                                 $this->Session->setFlash('Sorry, but this system has some incorrect or untested software installed. Please contact the system administrator.');
                                 $this->Auth->logoutRedirect = array('controller'=>'pages', 'action'=>'bad_cake_version');
-                                $this->redirect($this->Auth->logout());
+                                $redirect = $this->Auth->logout();
+                                return $this->redirect( $redirect );
                             }
                             $user_id = $this->Auth->user('id');
                             // Get some information about the user about the currently logged in user
@@ -107,7 +117,8 @@ class UsersController extends AppController {
                             if ($logged_in_user_details['Roletype']['name'] != 'Superadmin' &&
                                 $logged_in_user_details['User']['active'] != 1) {
                                 $this->Session->setFlash('Sorry, your account is not (yet) activated, please contact the coordinator');
-                                $this->redirect($this->Auth->logout());
+                                $this->Auth->logout();
+                                return $this->redirect('/');
                             }
                                 
                             // Not necessary to store User information in the Session
@@ -126,7 +137,7 @@ class UsersController extends AppController {
                             $this->Auth->loginRedirect = array('controller'=>'users', 'action'=> 'view', $logged_in_user_details['User']['id']);
                             //$this->Auth->loginRedirect = array('controller'=>'users', 'action'=> 'dashboard');
                             
-                           $this->redirect($this->Auth->redirect());
+                            return $this->redirect($this->Auth->redirect());
                         } else {
                             $this->Session->setFlash('Hmmm, something was wrong with your username or password');
                         }
@@ -145,9 +156,12 @@ class UsersController extends AppController {
                  * as logoutRedirect element of the Auth component 
                  * (currently defined in the AppController)
                  */
-                 // No reason to keep the session data after the user has logged out
-                $this->Session->destroy();
-		$this->redirect($this->Auth->logout());
+                 // No reason to keep the session data after the user has logged out                
+                $this->Session->delete('Roletype');
+                $this->Session->delete('Tenant');
+                $this->Session->delete('ParentUser');
+                $this->Auth->logout();
+		return $this->redirect(array('controller'=>'pages', 'action'=>'logged_out'));
             
 	}
         
@@ -292,6 +306,10 @@ class UsersController extends AppController {
                 
                 $this->User->data = $this->User->read(null, $id);
                 $myUserId = $this->Session->read('Auth.User.id');
+                // If we are not logged in, then do nothing
+                if ($myUserId == null) {
+                    return;
+                }
                 //Debugger::dump($this->User->data);
                 // Only show user_away_dates in full view
                 if ($action == 'view') {
