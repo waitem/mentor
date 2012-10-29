@@ -52,7 +52,7 @@
                     // which is only visible to Coordinators and above
                     // And the mentor can see selected fields of his own Admin tab
                     if ((in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) )  &&
-                                            in_array($user['User']['roletype_id'], array(MENTOR, MENTEE))) ||
+                            $myRoletypeId < $user['User']['roletype_id']) ||
                         ($user['User']['roletype_id'] == MENTOR && 
                                          $myUserId == $user['User']['id']) ) : ?>
                     <li><a href="#tabs-30"><?php echo 'Administration'?></a></li>
@@ -154,10 +154,12 @@
                 echo "</div>";
                 ?>
                 <?php // ADMIN TAB 
+                // Superadmins, admins and coordinators get to see the admin tab for all users with lower roles
                 if ((in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) )  &&
-                                            in_array($user['User']['roletype_id'], array(MENTOR, MENTEE))) ||
+                                            $myRoletypeId < $user['User']['roletype_id']) ||
                         ($user['User']['roletype_id'] == MENTOR && 
                                          $myUserId == $user['User']['id']) ) {
+                    
                     echo '<div id="tabs-30" class="tab">';
                     echo '<div class="left twocols">';
 
