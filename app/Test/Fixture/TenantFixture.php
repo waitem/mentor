@@ -27,7 +27,7 @@ class TenantFixture extends CakeTestFixture {
 	public $records = array(
 		array(
 			'id' => 1,
-			'name' => 'Lorem ipsum dolor sit amet',
+			'name' => 'Tenant One',
 			'created' => '2012-06-18 10:41:39',
 			'modified' => '2012-06-18 10:41:39'
 		),

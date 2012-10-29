@@ -29,10 +29,38 @@ more important'),
 	public $records = array(
 		array(
 			'id' => 1,
-			'name' => 'Lorem ipsum dolor sit amet',
-			'importance' => 1,
+			'name' => 'Superadmin',
+			'importance' => 10,
 			'created' => '2012-06-09 14:09:31',
 			'modified' => '2012-06-09 14:09:31'
 		),
+                array(
+			'id' => 2,
+			'name' => 'Admin',
+			'importance' => 20,
+			'created' => '2012-06-09 14:09:31',
+			'modified' => '2012-06-09 14:09:31'
+		),
+                array(
+			'id' => 3,
+			'name' => 'Coordinator',
+			'importance' => 30,
+			'created' => '2012-06-09 14:09:31',
+			'modified' => '2012-06-09 14:09:31'
+		),
+                array(
+			'id' => 4,
+			'name' => 'Mentor',
+			'importance' => 40,
+			'created' => '2012-06-09 14:09:31',
+			'modified' => '2012-06-09 14:09:31'
+		),
+                array(
+			'id' => 5,
+			'name' => 'Mentee',
+			'importance' => 50,
+			'created' => '2012-06-09 14:09:31',
+			'modified' => '2012-06-09 14:09:31'
+		),            
 	);
 }
