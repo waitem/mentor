@@ -3,7 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * UserExpenseClaim Model
  * 
- * Copyright (c) 2012 Noosa Chamber of Commerce and Industry
+ * Copyright (c) 2012 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 

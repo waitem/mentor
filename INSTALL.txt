@@ -30,6 +30,11 @@ sudo mv app app.cakephp_orig
 Install the mentor code from the repository:
 sudo cp -r <path_to_git_repo>/mentor/app <path_to_html_dir>/mentor
 
+Create the following temporary directories if necessary:
+app/tmp/logs
+app/tmp/cache/persistent
+app/tmp/cache/models
+
 Ensure that the web server (here assumed to be group www-data) has write access to the app/tmp directory
 cd <path_to_html_dir>/mentor
 sudo chgrp -R www-data app/tmp

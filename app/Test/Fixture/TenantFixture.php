@@ -31,5 +31,11 @@ class TenantFixture extends CakeTestFixture {
 			'created' => '2012-06-18 10:41:39',
 			'modified' => '2012-06-18 10:41:39'
 		),
+                array(
+			'id' => 2,
+			'name' => 'Tenant Two',
+			'created' => '2012-06-18 10:41:39',
+			'modified' => '2012-06-18 10:41:39'
+		),
 	);
 }

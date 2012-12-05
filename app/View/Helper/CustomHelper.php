@@ -2,7 +2,7 @@
 /* /app/View/Helper/CustomHelper.php (using other helpers) */
 
 /*
- * Copyright (c) 2012 Noosa Chamber of Commerce and Industry
+ * Copyright (c) 2012 Mark Waite
  */
 
 App::uses('AppHelper', 'View/Helper');

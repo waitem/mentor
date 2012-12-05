@@ -19,7 +19,7 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  * 
- * This version: Copyright (c) 2012 Noosa Chamber of Commerce and Industry
+ * This version: Copyright (c) 2012 Mark Waite
  */
 
 App::uses('Helper', 'View');

@@ -15,7 +15,7 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  * 
- * This version: Copyright (c) 2012 Noosa Chamber of Commerce and Industry
+ * This version: Copyright (c) 2012 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -54,7 +54,7 @@
 	?>
 </head>
 <body>
-    <!-- This software program is Copyright (c) 2012 Noosa Chamber of Commerce and Industry  -->
+    <!-- This software program is Copyright (c) 2012 Mark Waite  -->
 	<div id="container">
 		<div id="header" class="left">
                     <h1><?php if ($this->Session->check('Tenant.name')): ?>
@@ -96,7 +96,7 @@
                         echo ' ';
                         echo 'version ' . Configure::read('Mentor.version');;
                         echo ' | ';
-			echo __('Copyright (c) 2012 ') . $this->Html->link('Noosa Chamber of Commerce and Industry', 'http://noosachamber.com.au', array('target' => '_blank'));
+			echo __('Copyright (c) 2012 Mark Waite');
                         echo ' | ';
                         echo $this->Html->link('Terms of Use', array('controller'=>'pages','action'=>'terms_of_use'), array('target' => '_blank'));
                                 ?>

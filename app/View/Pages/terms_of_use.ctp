@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012 Noosa Chamber of Commerce and Industry
+ * Copyright (c) 2012 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -12,7 +12,7 @@
 <div class="fullscreen">
 <p>&nbsp;</p>
 
-<p>This Software is Copyright (c) 2012 Noosa Chamber of Commerce and Industry</p>
+<p>This Software is Copyright (c) 2012 Mark Waite</p>
 <p>&nbsp;</p>
 <p>Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
