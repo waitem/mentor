@@ -2,11 +2,11 @@
 App::uses('AppModel', 'Model');
 /**
  * User Model
- * 
- * Copyright (c) 2012 Mark Waite
- * 
+ *
+ * Copyright (c) 2012-2013 Mark Waite
+ *
  * Author(s): See AUTHORS.txt
- * 
+ *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
@@ -18,6 +18,13 @@ App::uses('AppModel', 'Model');
  */
 class User extends AppModel {
       //var $actsAs = array('Containable');
+
+  public $actsAs = array(
+            'AuditLog.Auditable' => array(
+               'ignore' => array( 'created' )
+            )
+        );
+  
 /**
  * Display field
  *
@@ -25,12 +32,12 @@ class User extends AppModel {
  */
 	public $displayField = 'name';
         /*
-        public $virtualFields = array( 
+        public $virtualFields = array(
             'name' => 'CONCAT(first_name, " ", last_name)'
         );
-         * 
+         *
          */
-        
+
         /*
          *  we need to defien the virtualField in the constructor
          * because this model is also referred to as ParentUser and ChildUser
@@ -79,7 +86,17 @@ class User extends AppModel {
                                 'message' => 'Sorry, this e-mail address has already been used',
                         )
 		),
-                'password' => array(
+                'recover_account_email' => array(
+                        'email' => array(
+                                'rule' => array('email'),
+                                'message' => 'Please enter a valid e-mail address',
+				'allowEmpty' => false,
+				//'required' => false,
+				'last' => true, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+        'password' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
 				'message' => 'Please enter your password',
@@ -114,6 +131,18 @@ class User extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+                'second_mentor_id' => array(
+                    'must_have_parent_id' => array(
+                        'rule' => 'mustHaveParentId',
+                        'message' => 'You cannot set a second mentor if the primary mentor is unassigned',
+                        'allowEmpty' => true,
+                    ),
+                    'not_same_as_parent_id' => array(
+                        'rule' => 'notSameAsParentId',
+                        'message' => 'It doesn\'t make sense to have the same second mentor as the primary one?!',
+                        'allowEmpty' => true,
+                    )
+                )
 	);
 
         /**
@@ -121,10 +150,10 @@ class User extends AppModel {
          * @param type $data
          * Contains the form data for that field only
          * @return type boolean
-         * 
+         *
          */
         public function matchPasswords($data) {
-            /** 
+            /**
              * Note that we can only access other form data fields
              * through $this->data (as is done in the controllers)
              */
@@ -132,11 +161,52 @@ class User extends AppModel {
                 return true;
             }
             /**
-             * If we get here, then the password fields do not match, so 
+             * If we get here, then the password fields do not match, so
              * we must also invalidate the password_confirmation field
              * so that it too shows an error message
              */
             $this->invalidate('password_confirmation', 'The passwords do not match' );
+            return false;
+        }
+        
+        public function mustHaveParentId($field_value_array) {
+            
+            if ( $this->data['User']['second_mentor_id'] ) {
+                /*
+                 * If setting a second_mentor_id, then 
+                 * ensure that the parent_id is also set
+                 */
+                if( $this->data['User']['parent_id'] ) {
+                    // it is, all good
+                    return true;
+                } else {
+                    // can't set a second_mentor without a parent_id
+                    return false;
+                }
+            } else {
+                // if the second mentor id is not set, we don't care
+                // about the parent_id
+                return true;
+            }
+            return false;
+        }
+
+        public function notSameAsParentId($field_value_array) {
+            /*
+             * If setting a second_mentor_id, then 
+             * ensure that the parent_id is not the same
+             */
+            if ( $this->data['User']['second_mentor_id'] ) {
+               if ($this->data['User']['parent_id'] != $this->data['User']['second_mentor_id']) {
+                    return true;
+               } else {
+                   return false;
+               }
+            } else {
+                // if the second mentor id is not set, we don't care
+                // about the parent_id
+                return true;
+            }
             return false;
         }
         
@@ -154,9 +224,9 @@ class User extends AppModel {
         }
 
         public function getUserDetails($user_id) {
-                           
+
                 // Now get some information about the user
-         
+
                 $user_details = User::find(
                                         'first',
                                         array(
@@ -167,9 +237,10 @@ class User extends AppModel {
                                      );
                 return $user_details;
         }
-        
+
         // Work out the view that we can use to show the user $userId
-        public function getView($userId, $roletypeId, $tenantId, $myUserId, $myRoletypeName, $myRoletypeId, $myTenantId, $myParentId, $myParentUserParentId ) {
+        public function getView($userId, $roletypeId, $tenantId, $myUserId, $myRoletypeName, $myRoletypeId, $myTenantId, $myParentId, $myParentUserParentId, 
+                                $secondMentorId ) {
 
             // we can view ourselves
             if ($myUserId == $userId) {
@@ -178,7 +249,7 @@ class User extends AppModel {
             } elseif ($myRoletypeName == 'Superadmin') {
                 return 'view';
             }
-           
+
             // if we get this far but are not the same tenant, then we aren't allowed to see anything
             if ( $myTenantId != $tenantId ) {
                 return 'none';
@@ -198,25 +269,29 @@ class User extends AppModel {
                     return( 'view');
                 }
             } elseif ($myRoletypeName == 'Mentor') {
-                if ( $userId == $myParentId ) {
+                if ( $userId == $myParentId ||
+                        $myUserId == $secondMentorId) {
                     return 'view';
+                    // Allow mentors to see other mentors' profiles
+                } elseif ( $roletypeId == $myRoletypeId ) {
+                    return 'view_profile';
                 }
-                
+
             } elseif ($myRoletypeName == 'Mentee') {
-                if (in_array($userId, array( $myParentId, $myParentUserParentId))) {
+                if (in_array($userId, array( $myParentId, $myParentUserParentId, $secondMentorId))) {
                     return 'view';
                 }
-                
+
             }
             // default ...
             return 'none';
         }
-        
+
         /* returns true if I can view the children
-         * 
+         *
          */
         public function canViewChildren( $userId, $roletypeId, $roletypeName, $myUserId, $myRoletypeName, $myRoletypeId ) {
-            
+
             // If I'm a mentee or I'm looking at one, no children to see
            if ($myRoletypeName == 'Mentee' || $roletypeName == 'Mentee') {
                return false;
@@ -230,25 +305,33 @@ class User extends AppModel {
            }
            return false;
         }
-        
-        public function canBeAccessedBy($userId, $action, $myUserId, $myParentId, $myTenantId, $myRoletypeId, $myRoletypeName, $myParentUserParentId ) {
-            
+
+        public function canBeAccessedBy($userId, $action, $myUserId, $myParentId, $myTenantId, $myRoletypeId, $myRoletypeName, $myParentUserParentId, $mySecondMentorId ) {
+
             # If any parameters not set, assume that we are not correctly logged in
-            if ($myUserId == null 
+            if ($myUserId == null
                     or $myTenantId == null
                     or $myRoletypeId == null ) {
-                return false;                
+                return false;
             }
-            
-            $userDetails = User::getUserDetails( $userId);            
-            
-            // 
+
+            $userDetails = User::getUserDetails( $userId);
+
+            //
+            // Do not let a user reset their own password
+            // Also do not let a user's password be reset if they are not an active user
+            if ($action == 'reset_password') {
+                if ($myUserId == $userId || $userDetails['User']['active'] == false) {
+                        return false;
+                }
+            }
+
             // Everyone can edit, view, change_password their own details
             if ($myUserId == $userId) {
-                return true;
+                    return true;
             // Superadmins can edit, view, change_password anyone
             } elseif ($myRoletypeName == 'Superadmin') {
-                return true;            
+                return true;
             // Admins and Coordinators can edit, view, change_password  anyone at their level or below in their tenant
             } elseif ( in_array($myRoletypeName, array( 'Coordinator', 'Admin') )
                            && $myTenantId == $userDetails['User']['tenant_id'] ) {
@@ -261,14 +344,15 @@ class User extends AppModel {
                            }
                        } elseif ( $myRoletypeId <= $userDetails['Roletype']['id'] ) {
                            return true;
-                       }  
+                       }
             // Mentors can edit, view, change_password their mentees
             }  elseif ($myRoletypeName == 'Mentor' &&
                         $myTenantId == $userDetails['User']['tenant_id'] &&
                         $userDetails['User']['active'] == 1 &&
-                        $myUserId == $userDetails['User']['parent_id']
+                        ($myUserId == $userDetails['User']['parent_id'] ||
+                            $myUserId == $userDetails['User']['second_mentor_id'])
                         ) {
-                        return true;                
+                        return true;
             // Mentors can have a restricted view of all of the mentors and coordinators
             } elseif (in_array($myRoletypeName, array( 'Mentor' ) ) ) {
                 if ($action == 'view_profile' &&
@@ -276,7 +360,7 @@ class User extends AppModel {
                         $userDetails['User']['active'] == 1 &&
                         in_array( $userDetails['Roletype']['name'], array( 'Mentor', 'Coordinator' ) )
                     ) {
-                    return true;                
+                    return true;
                 } elseif ( $action == 'view') {
                     // A mentor can just view his parent (coordinator)
                     $ancestors = array( $myParentId );
@@ -291,7 +375,7 @@ class User extends AppModel {
             } elseif (in_array($myRoletypeName, array( 'Mentee' ) ) ) {
                 if ( in_array( $action, array('view', 'view_profile'))) {
                     // A mentee can view his parent (mentor) or parent's parent (coordinator)
-                    $ancestors = array( $myParentId, $myParentUserParentId );
+                    $ancestors = array( $myParentId, $myParentUserParentId, $mySecondMentorId );
                     // And the user must be the same Tenant and be active too
                     if ( $myTenantId == $userDetails['User']['tenant_id'] &&
                             $userDetails['User']['active'] == 1 &&
@@ -303,12 +387,19 @@ class User extends AppModel {
             }
 
             return false;
-            
+
         }
 
-        public function getChildPaginate($action, $myUserId, $myParentId, $myTenantId, $myRoletypeId, $myRoletypeName, $active, $paid) {
-            
-            if ($action == 'list_mentees') {
+        public function getChildPaginate($action, $myUserId = null, $myParentId = null, $myTenantId, $myRoletypeId = null, $myRoletypeName = null, $active = null, $paid = null) {
+
+        	if (in_array($action, array( 'mentees_table', 'mentees_csv'))) {
+        		return array(
+        				// Same tenant
+        				'User.tenant_id' => $myTenantId,
+        				// only mentees
+        				'User.roletype_id' => 5,
+        		);
+        	} elseif (in_array($action, array( 'list_mentees' ))) {
                return array(
                    // Same tenant
                    'User.tenant_id' => $myTenantId,
@@ -356,6 +447,13 @@ class User extends AppModel {
                    'User.roletype_id' => 4,
                    'User.active' => $active,
                );
+            } elseif (in_array($action, array( 'mentors_table', 'mentors_csv'))) {
+               	return array(
+               			// Same tenant
+               			'User.tenant_id' => $myTenantId,
+               			// only mentees
+               			'User.roletype_id' => 4,
+               	);
            } elseif ($action == 'list_coordinators') {
                return array(
                    // Same tenant
@@ -374,7 +472,7 @@ class User extends AppModel {
                );
             }
             // Superadmins can list anyone
-            if ($myRoletypeName == 'Superadmin') {                   
+            if ($myRoletypeName == 'Superadmin') {
                    return null;
             // Admins and Coordinators can list anyone at their level or below in their tenant
             } elseif ( in_array($myRoletypeName, array( 'Coordinator', 'Admin') ) ) {
@@ -394,25 +492,14 @@ class User extends AppModel {
                            'User.id !=' => $myUserId,
                             );
                    }
-            // Mentors can see the profiles of their own mentees and the other mentors
-            }  elseif ($myRoletypeName == 'Mentor') {
+            // Mentors can see the profiles of the other mentors
+            }  elseif ($myRoletypeId == MENTOR) {
+            	// listing profiles
                 if ($action == 'index') {
                     return array(
                                     'User.tenant_id' => $myTenantId,
                                     'User.active' => 1,
-                                    'OR' => array(
-                                        'User.parent_id' => $myUserId,
-                                        // we need to put each of these conditions in an array because
-                                        // they use the same key
-                                        array(
-                                          // other mentors ...
-                                         'User.roletype_id' => $myRoletypeId   
-                                        ),
-                                        array(
-                                        // Coordinators ...
-                                        'User.roletype_id' => $myRoletypeId - 1    
-                                        )
-                                    )
+                    				'User.roletype_id' => MENTOR
                             );
                 // in the dashboard only show their mentees
                 } else {
@@ -428,15 +515,7 @@ class User extends AppModel {
                              );
                 }
                 // Mentees can view the mentors
-            } elseif ($myRoletypeName == 'Mentee' ) {
-                if ($action == 'index') {
-                    return array(
-                                    'User.tenant_id' => $myTenantId,
-                                    'User.active' => 1,
-                                    // show all mentors and coordinators in mentees contact list
-                                    'User.roletype_id BETWEEN ? AND ?' => array(3,4)
-                        );
-                } else {
+            } elseif ($myRoletypeId == MENTEE ) {
                     return array(
                                     'User.tenant_id' => $myTenantId,
                                     'User.active' => 1,
@@ -453,11 +532,10 @@ class User extends AppModel {
                                         )
                                     )
                         );
-                }
             }
-            
+
         }
-        
+
         //The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
@@ -522,6 +600,20 @@ class User extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+        'SecondMentor' => array(
+			'className' => 'User',
+			'foreignKey' => 'second_mentor_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'UserStatus' => array(
+			'className' => 'UserStatus',
+			'foreignKey' => 'user_status_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 
@@ -544,7 +636,20 @@ class User extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-                'UserAwayDate' => array(
+		'SecondMentorFor' => array(
+			'className' => 'User',
+			'foreignKey' => 'second_mentor_id',
+			'dependent' => false,
+			'conditions' => array('SecondMentorFor.active' => true),
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+        'UserAwayDate' => array(
 			'className' => 'UserAwayDate',
 			'foreignKey' => 'user_id',
 			'dependent' => false,
@@ -556,6 +661,19 @@ class User extends AppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
+		),
+		'Invoice' => array(
+				'className' => 'Invoice',
+				'foreignKey' => 'user_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => 'Invoice.date_invoiced DESC',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 		),
 	);
 

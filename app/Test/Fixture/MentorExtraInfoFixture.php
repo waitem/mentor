@@ -4,6 +4,7 @@
  *
  */
 class MentorExtraInfoFixture extends CakeTestFixture {
+
 /**
  * Table name
  *
@@ -12,22 +13,11 @@ class MentorExtraInfoFixture extends CakeTestFixture {
 	public $table = 'mentor_extra_info';
 
 /**
- * Fields
+ * Import
  *
  * @var array
  */
-	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
-		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
-		'date_joined' => array('type' => 'date', 'null' => true, 'default' => NULL),
-		'trained' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
-		'date_trained' => array('type' => 'date', 'null' => true, 'default' => NULL),
-		'max_mentees' => array('type' => 'integer', 'null' => true, 'default' => NULL),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1), 'id_UNIQUE' => array('column' => 'id', 'unique' => 1)),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
-	);
+	public $import = array('model' => 'MentorExtraInfo');
 
 /**
  * Records
@@ -36,14 +26,17 @@ class MentorExtraInfoFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 1,
-			'user_id' => 1,
-			'date_joined' => '2012-07-05',
+			'id' => '1',
+			'user_id' => '7',
+			'date_joined' => '2011-11-11',
 			'trained' => 1,
-			'date_trained' => '2012-07-05',
-			'max_mentees' => 1,
-			'created' => '2012-07-05 17:18:41',
-			'modified' => '2012-07-05 17:18:41'
+			'agreement_signed' => 0,
+			'date_agreement_signed' => null,
+			'date_trained' => '2011-12-07',
+			'max_mentees' => '2',
+			'created' => '2012-07-05 17:46:12',
+			'modified' => '2013-03-30 14:06:08'
 		),
 	);
+
 }

@@ -3,7 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * MenteeExtraInfo Model
  * 
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -13,6 +13,13 @@ App::uses('AppModel', 'Model');
  * @property User $User
  */
 class MenteeExtraInfo extends AppModel {
+    
+    public $actsAs = array(
+            'AuditLog.Auditable' => array(
+               'ignore' => array( 'modified', 'created' )
+            )
+        );
+
 /**
  * Use table
  *
@@ -35,11 +42,11 @@ class MenteeExtraInfo extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-                'where_did_they_hear_about_us' => array(
+        'where_did_they_hear_about_us' => array(
 			'length' => array(
 				'rule' => array('maxLength', 100),
                                 'message' => 'Please enter a maximum of 100 characters in this field',
-				'allowEmpty' => true,
+				'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
@@ -49,16 +56,16 @@ class MenteeExtraInfo extends AppModel {
 			'date' => array(
 				'rule' => array('date'),
                                 'message' => 'Please enter the date that the mentee joined',
-				//'allowEmpty' => false,
+				'allowEmpty' => true,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-                        'notInFuture' => array(
-                            'rule' => array( 'dateNotInFuture', 'date_joined'),                            
-                        )
+            'notInFuture' => array(
+                'rule' => array( 'dateNotInFuture', 'date_joined'),                            
+            )
 		),
-                'waiver_form_signed' => array(
+        'waiver_form_signed' => array(
 			'boolean' => array(
 				'rule' => array('boolean'),
 				//'message' => 'Your custom message here',
@@ -67,12 +74,12 @@ class MenteeExtraInfo extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-                        'checkDate' => array(
-                            'rule' => array( 'checkDate', 'MenteeExtraInfo', 'waiver_form_signed', 'date_waiver_form_signed', 
-                                'Please enter the date that the waiver form was signed'),
-                            // If this isn't here, the checkbox becomes "required" for some reason ...
-                            'allowEmpty' => true,
-                        ),
+            'checkDate' => array(
+                'rule' => array( 'checkDate', 'MenteeExtraInfo', 'waiver_form_signed', 'date_waiver_form_signed', 
+                              'Please enter the date that the waiver form was signed'),
+                 // If this isn't here, the checkbox becomes "required" for some reason ...
+                 'allowEmpty' => true,
+            ),
 		),
 		'date_waiver_form_signed' => array(
 			'date' => array(
@@ -84,64 +91,11 @@ class MenteeExtraInfo extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-                        'notInFuture' => array(
-                            'rule' => array( 'dateNotInFuture', 'date_waiver_form_signed'),                            
-                        ),
-                        'notChecked' => array(
-                            'rule' => array( 'notChecked', 'MenteeExtraInfo', 'waiver_form_signed', 'date_waiver_form_signed', 
-                                'Please check the "Waiver form signed" box if the waiver form has been signed. Or leave the "Date Waiver Form Signed" field empty if not.'),
-                            ),
+            'notInFuture' => array(
+                'rule' => array( 'dateNotInFuture', 'date_waiver_form_signed'),                            
+            ),
 		),
-                'signed_on_to_chamber' => array(
-			'boolean' => array(
-				'rule' => array('boolean'),
-				//'message' => 'Your custom message here',
-                                'allowEmpty' => true,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-                        'checkDate' => array(
-                            'rule' => array( 'checkDate', 'MenteeExtraInfo', 'signed_on_to_chamber', 'date_signed_on_to_chamber', 
-                                'Please enter the date that the mentee signed on to Chamber'),
-                            // If this isn't here, the checkbox becomes "required" for some reason ...
-                            'allowEmpty' => true,
-                        ),
-		),
-		'date_signed_on_to_chamber' => array(
-			'date' => array(
-				'rule' => array('date'),
-				//'message' => 'Your custom message here',
-                                'allowEmpty' => true,
-				//'allowEmpty' => false,
-				'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-                        'notInFuture' => array(
-                            'rule' => array( 'dateNotInFuture', 'date_signed_on_to_chamber'),                            
-                        ),
-                        'notChecked' => array(
-                            'rule' => array( 'notChecked', 'MenteeExtraInfo', 'signed_on_to_chamber', 'date_signed_on_to_chamber', 
-                                'Please check the "Signed on to chamber" box if the mentee has signed on to Chamber. Or leave the "Date signed on to Chamber" field empty if not.'),
-                            ),
-		),            
-                'statement_of_purpose_sent' => array(
-			'boolean' => array(
-				'rule' => array('boolean'),
-				//'message' => 'Your custom message here',
-                                'allowEmpty' => true,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-                        'checkDate' => array(
-                            'rule' => array( 'checkDate', 'MenteeExtraInfo', 'statement_of_purpose_sent', 'date_statement_of_purpose_sent', 
-                                'Please enter the date that the Statement of Purpose was sent'),
-                            // If this isn't here, the checkbox becomes "required" for some reason ...
-                            'allowEmpty' => true,
-                        ),
-		),
+		// this field is now being used for "Date contacted" ...
 		'date_statement_of_purpose_sent' => array(
 			'date' => array(
 				'rule' => array('date'),
@@ -152,28 +106,14 @@ class MenteeExtraInfo extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-                        'notInFuture' => array(
-                            'rule' => array( 'dateNotInFuture', 'date_statement_of_purpose_sent'),                            
-                        ),
-                        'notChecked' => array(
-                            'rule' => array( 'notChecked', 'MenteeExtraInfo', 'statement_of_purpose_sent', 'date_statement_of_purpose_sent', 
-                                'Please check the "Waiver form signed" box if the Statement of Purpose has been sent. Or leave the "Date Statement of Purpose sent" field empty if not.'),
-                            ),
+            'notInFuture' => array(
+                'rule' => array( 'dateNotInFuture', 'date_statement_of_purpose_sent'),                            
+            ),
 		),
-                'company_web_site' => array(
+        'company_web_site' => array(
 			'url' => array(
 				'rule' => 'url',
                                 'message' => 'Please enter a valid website address',
-				'allowEmpty' => true,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
-		),
-                'additional_info' => array(
-			'length' => array(
-				'rule' => array('maxLength', 500),
-                                'message' => 'Please enter a maximum of 500 characters (approx 12 lines) in this field',
 				'allowEmpty' => true,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -190,12 +130,24 @@ class MenteeExtraInfo extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-                        'checkDate' => array(
-                            'rule' => array( 'checkDate', 'MenteeExtraInfo', 'invoiced', 'date_invoiced', 
+            'checkDate' => array(
+                'rule' => array( 'checkDate', 'MenteeExtraInfo', 'invoiced', 'date_invoiced', 
                                 'Please enter the date that the mentee invoice was sent'),
                             // If this isn't here, the checkbox becomes "required" for some reason ...
-                            'allowEmpty' => true,                            
-                        ),
+                'allowEmpty' => true,                            
+            ),
+            'invoiceNumber' => array(
+            	'rule' => array( 'invoiceNumberSet', 'MenteeExtraInfo', 'invoiced', 'invoice_number', 
+                                'Please enter an invoice number'),
+            ),
+		),
+		'invoice_number' => array(
+			'unique' => array(
+				'rule' => 'isUnique',
+				'message' => 'This invoice number has already been used',
+				// If this isn't here, the invoice_number field becomes "required" ...
+				'allowEmpty' => true,
+			)
 		),
 		'date_invoiced' => array(
 			'date' => array(
@@ -338,9 +290,16 @@ class MenteeExtraInfo extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-		),
+		)
 	);
-
+	
+	public function invoiceNumberSet( $data, $model, $this_field, $other_field, $message ) {
+		if ( $this->data[$model][$this_field] && strlen($this->data[$model][$other_field]) == 0) {
+			$this->invalidate($other_field, $message );
+		}
+		return true;
+	}
+        
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
@@ -355,6 +314,6 @@ class MenteeExtraInfo extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		)
+		),
 	);
 }

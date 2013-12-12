@@ -3,7 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * UserExpenseClaim Model
  * 
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -13,6 +13,13 @@ App::uses('AppModel', 'Model');
  * @property User $User
  */
 class UserExpenseClaim extends AppModel {
+    
+    public $actsAs = array(
+            'AuditLog.Auditable' => array(
+               'ignore' => array( 'modified', 'created' )
+            )
+        );
+
 /**
  * Validation rules
  *

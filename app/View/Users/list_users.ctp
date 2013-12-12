@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -18,7 +18,7 @@
             // This view/action can only be seen by Admins and Coordinators
             // (This is controlled in the UsersController::isAuthorized)
             
-            echo '<th>' . $this->Paginator->sort( 'active' ) . '</th>';
+            echo '<th>' . $this->Paginator->sort( 'user_status_id', __('Status') ) . '</th>';
             echo '<th>' . $this->Paginator->sort( 'first_name' ). '</th>';
             echo '<th>' . $this->Paginator->sort( 'last_name', __('Surname')). '</th>';
         
@@ -79,7 +79,12 @@
 	<?php
 	foreach ($users as $user): ?>
 	<tr>
-                <?php echo $this->element('Users/active', array('view' => 'dashboard', 'user' => $user['User'] )); ?>                
+                <?php echo $this->element('Users/status', array(
+                		'view' => 'dashboard', 
+                		'user' => $user, 
+                		'htmlHeader' => 'th',
+                		'htmlDetail' => 'td',
+                )); ?>                
                 <td><?php echo h($user['User']['first_name']); ?>&nbsp;</td>
                 <td><?php echo h($user['User']['last_name']); ?>&nbsp;</td>
                 <?php
@@ -145,7 +150,6 @@
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $user['User']['id'])); ?>
                         <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $user['User']['id'])); ?>
-                        <?php echo $this->Html->link(__('Password'), array('action' => 'change_password', $user['User']['id'])); ?>
 		</td>
                 <?php endif; ?>
 	</tr>
@@ -171,17 +175,22 @@
 	<ul>
                 <li><?php echo $this->Html->link(__('Dashboard'), array('controller' => 'users', 'action' => 'view', $myUserId)); ?></li>
                 <?php if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) ) ): ?>
-                    <li><?php echo $this->Html->link( __('Add') . ' ' . $roletype, 
-                            array('controller' => 'users', 'action' => 'add_' . strtolower($roletype) )); ?></li>
-                    <?php if (array_key_exists('active', $this->params['named']) && $this->params['named']['active'] == 'false'): ?>
-                    <li><?php echo $this->Html->link( __('Active') . ' ' . $roletype . 's', 
-                            array('controller' => 'users', 'action' => 'list_' . strtolower($roletype) . 's', 'active' =>  'true')); ?></li>
-                    <?php else: ?>
-                    <li><?php echo $this->Html->link( __('Inactive') . ' ' . $roletype . 's', 
-                            array('controller' => 'users', 'action' => 'list_' . strtolower($roletype) . 's', 'active' =>  'false')); ?></li>
-                    <li><?php echo $this->Html->link( __('Email') . ' ' . $roletype . 's', 
-                            array('controller' => 'users', 'action' => 'list_' . strtolower($roletype) . 's', 'email' => 'true')); ?></li>
-                    <?php endif; ?>
+                	<?php if ($roletype == 'Mentee' || $roletype == 'Mentor') :?>
+                		<li><?php echo $this->Html->link( $roletype . 's',
+                				array('controller' => 'users', 'action' => strtolower($roletype) . 's_table')); ?></li>
+                	<?php else :?>
+	                    <li><?php echo $this->Html->link( __('Add') . ' ' . $roletype, 
+	                            array('controller' => 'users', 'action' => 'add_' . strtolower($roletype) )); ?></li>
+	                    <?php if (array_key_exists('active', $this->params['named']) && $this->params['named']['active'] == 'false'): ?>
+	                    <li><?php echo $this->Html->link( __('Active') . ' ' . $roletype . 's', 
+	                            array('controller' => 'users', 'action' => 'list_' . strtolower($roletype) . 's', 'active' =>  'true')); ?></li>
+	                    <?php else: ?>
+	                    <li><?php echo $this->Html->link( __('Inactive') . ' ' . $roletype . 's', 
+	                            array('controller' => 'users', 'action' => 'list_' . strtolower($roletype) . 's', 'active' =>  'false')); ?></li>
+	                    <li><?php echo $this->Html->link( __('Email') . ' ' . $roletype . 's', 
+	                            array('controller' => 'users', 'action' => 'list_' . strtolower($roletype) . 's', 'email' => 'true')); ?></li>
+	                    <?php endif; ?>
+                    <?php endif;?>
                     <?php if ($roletype == 'Mentee'): ?>
                             <?php if (array_key_exists('paid', $this->params['named']) && $this->params['named']['paid'] == 'false'): ?>
                                 <li><?php echo $this->Html->link(__('Mentee Accounts Paid'), array('controller' => 'users', 'action' => 'list_accounts', 'paid' =>  'true')); ?></li>

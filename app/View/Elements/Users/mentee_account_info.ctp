@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -19,6 +19,7 @@
                     )
                  );
             echo '</div>';
+            echo $this->Form->input('MenteeExtraInfo.invoice_number');
             echo '<div class="showHideDate">';
             echo $this->Form->input('MenteeExtraInfo.payment_received', array('label' => 'Mentee invoice paid'));
             echo $this->Form->input('MenteeExtraInfo.date_payment_received',
@@ -38,10 +39,10 @@
                 echo '<' . $htmlDetail . '>' ;                
                 if ($user['MenteeExtraInfo']['invoiced'] == 1) {
                     if ($user['MenteeExtraInfo']['payment_received'] == 1) {
-                        echo 'Paid on ' . 
+                        echo 'Invoice ' . h($user['MenteeExtraInfo']['invoice_number']) . ' paid on ' . 
                                 h($this->Custom->longDate( $user['MenteeExtraInfo']['date_payment_received']));
                     } else {
-                        echo 'Payment outstanding (invoice sent on ' . 
+                        echo 'Payment outstanding (invoice ' . h($user['MenteeExtraInfo']['invoice_number']) . ' sent on ' . 
                                 h($this->Custom->longDate($user['MenteeExtraInfo']['date_invoiced'])) . ')' ;
                     }
                 } else {

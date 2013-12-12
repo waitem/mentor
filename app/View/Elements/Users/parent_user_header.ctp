@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -17,7 +17,7 @@
         elseif ($user['Roletype']['name'] == 'Mentor')
             echo __('Coordinator');
         elseif ($user['Roletype']['name'] == 'Mentee')
-            echo __('Mentor');
+            echo __('Primary Mentor');
         else {
             echo __('Parent User');         
         }

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -30,16 +30,24 @@
                             'default' => 'QLD'));
                 echo $this->Form->input('UserAddress.postcode');
         } elseif (in_array($view, array('view'))) {
-            echo '<dt>' . __('Address') . '</dt>';
-            echo '<dd>' ;
-            if (strlen($user['UserAddress']['street'] > 0)) {
-                echo h($user['UserAddress']['street']) . ', ';
-            }
-            echo h($user['UserAddress']['suburb']) . ' ' .
-                    h($user['UserAddress']['state']) . ' ' .
-                    h($user['UserAddress']['postcode']) .
-                            '&nbsp' .	'</dd>';
+        	if (! empty($htmlHeader)) {
+        		echo '<' . $htmlHeader . '>' ;
+        		echo __('Address');
+        		echo '</' . $htmlHeader . '>' ;
+        	}
 
+        	if (! empty($htmlDetail)) {
+            	echo '<' . $htmlDetail . '>' ;
+        	}
+            if (strlen($user['UserAddress']['street'] > 0)) {
+                echo h($user['UserAddress']['street']) . (! empty($separator) ? $separator : ', ' );
+            }
+            echo h($user['UserAddress']['suburb']) . (! empty($separator) ? $separator : ' ' ) .
+                    h($user['UserAddress']['state']) . (! empty($separator) ? $separator : ' ' ) .
+                    h($user['UserAddress']['postcode']) . (! empty($separator) ? '' : '&nbsp;' );
+            if (! empty($htmlDetail)) {
+            	echo '</' . $htmlDetail . '>' ;
+            }
         } else {
             echo "Hmmm, not sure what I should be showing here. Please fix Elements/Users/address.ctp";
         }

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -22,8 +22,8 @@
         array('target' => '_blank', 'escape' => false)); ?>
 
 <p>&nbsp;</p>
-<p>We are also grateful for the support given to us by our sponsors:</p>
+<p>We are also grateful for the support given to us by our sponsors.</p>
 
-<p><?php echo $this->element('Pages/sponsors', array('view' => 'edit')); ?></p>
+<p><?php //echo $this->element('Pages/sponsors'); ?></p>
 
 </div>

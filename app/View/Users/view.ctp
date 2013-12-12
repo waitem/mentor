@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -24,39 +24,44 @@
             // Don't show our own "active" status - if we aren't active
             // we wouldn't be able to log in!
             if ($myUserId != $user['User']['id']) {
-               echo $this->element('Users/active', array(
+       			 echo $this->element('Users/status', array(
                    'view' => 'view' ,
-                   'user' => $user['User']
+                   //'user' => $user['User']
+					'htmlHeader' => 'dt',
+       			 	'htmlDetail' => 'dd',
                    )
                );
             }
+               echo $this->element('Users/parent_user_header',
+                array(
+                    'view' => 'view',
+                    'htmlType' => 'dt'
+                    )
+                );                    
+            echo $this->element('Users/parent_user_detail',
+                array(
+                    'view' => 'view',
+                    'htmlType' => 'dd'
+                    )
+                );              
+                echo $this->element('Users/mentee_second_mentor', 
+                            array(
+                                'view' => 'view',
+                                'htmlHeader' => 'dt',
+                                'htmlDetail' => 'dd',
+                                )
+                            );
             ?>
-
+                                
                 <?php
                 if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator','Mentor' ) ) ) {
                     if ($user['Roletype']['name'] == 'Mentee') {
                         foreach (array(
                                     'mentee_hear_about',
+                        			'mentee_statement_of_purpose_sent',
                                     'mentee_date_joined',
-                                    'mentee_statement_of_purpose_sent',
+                        			'mentee_account_info',
                                     'mentee_waiver_form_signed',
-                            ) as $element) {
-                        echo $this->element('Users/' . $element, 
-                            array(
-                                'view' => 'view',
-                                'newRoletypeName' => $user['Roletype']['name'],
-                                'htmlHeader' => 'dt',
-                                'htmlDetail' => 'dd',
-                                )
-                            );
-                        };
-                    };
-                };
-                if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) ) ) {
-                    if ($user['Roletype']['name'] == 'Mentee') {
-                        foreach (array(
-                                    'mentee_account_info',
-                                    'mentee_chamber_account_info',
                             ) as $element) {
                         echo $this->element('Users/' . $element, 
                             array(
@@ -106,27 +111,28 @@
                 <?php echo $this->element('Users/address',
                     array(
                         'view' => 'view',
-                        'htmlType' => 'dd'
+						'htmlHeader' => 'dt',
+       			 		'htmlDetail' => 'dd',
                         )
                     );
                 ?>    
                 <?php echo $this->element('Users/mentee_company',
                     array(
                         'view' => 'view',
+						'htmlHeader' => 'dt',
+						'htmlDetail' => 'dd',
+						'htmlRow' => 'tr',
                         )
                     );
                 ?>
                 <?php echo $this->element('Users/mentee_additional_info',
                     array(
                         'view' => 'view',
+						'htmlHeader' => 'dt',
+						'htmlDetail' => 'dd',
                         )
                     );
-                ?>    
-                <dt><?php echo __('Role'); ?></dt>
-		<dd>
-			<?php echo h($user['Roletype']['name']); ?>
-			&nbsp;
-		</dd>
+                ?>
                 <?php   
                 if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) ) 
                         || $myUserId == $user['User']['id']) {
@@ -140,24 +146,15 @@
                                 );
                     }
                 }
-                echo $this->element('Users/parent_user_header',
-                    array(
-                        'view' => 'view',
-                        'htmlType' => 'dt'
-                        )
-                    );                    
-                echo $this->element('Users/parent_user_detail',
-                    array(
-                        'view' => 'view',
-                        'htmlType' => 'dd'
-                        )
-                    );              
                 ?>
-		<dt><?php echo __('Profile'); ?></dt>
-		<dd><div class="profile">
-			<?php echo nl2br( h($user['Profile']['notes']) ); ?>
-                        </div>
-		</dd>
+                <?php if ($user['Roletype']['name'] == 'Mentor') {?>
+					<dt><?php echo __('Profile'); ?></dt>
+					<dd>
+						<div class="profile">
+							<?php echo nl2br( h($user['Profile']['notes']) ); ?>
+                    	</div>
+					</dd>
+				<?php }?>
 	</dl>
 </div>
 <div class="actions">
@@ -182,8 +179,11 @@
                 if ($myRoletypeName != 'Mentee' && $myRoletypeId < $user['User']['roletype_id']) {
                     echo '<li>' . $this->Html->link(__('Edit') . ' ' . $user['User']['first_name'] . '\'s details', 
                         array('action' => 'edit', $user['User']['id'])) . '</li>';
-                    echo '<li>' . $this->Html->link(__('Change') . ' ' . $user['User']['first_name'] . '\'s password', 
-                        array('action' => 'change_password', $user['User']['id'])) . '</li>';
+                    // Only allow password to be reset for active users
+                    if ($user['User']['active']) {
+                        echo '<li>' . $this->Html->link(__('Reset') . ' ' . $user['User']['first_name'] . '\'s password', 
+                            array('action' => 'reset_password', $user['User']['id'])) . '</li>';                       
+                    }
                 }
             ?>
             <?php endif; ?>
@@ -195,13 +195,17 @@
             if ($myRoletypeName != 'Mentee' && $myUserId == $user['User']['id']): ?>
             <li><?php echo $this->Html->link(__('Profiles'), array('controller' => 'users', 'action' => 'index')); ?> </li>
             <?php endif; ?>
+            <?php if ($myRoletypeId <= COORDINATOR) : ?>
+            <li><?php echo $this->Html->link(__('Audit Log'), array('controller' => 'audits', 'action' => 'index')); ?> </li>
+            <?php endif; ?>
 	</ul>
 </div>
         <?php 
         // Don't show "children" of mentees (there aren't any) and
         // Don't show "children" of anyone if the logged in user is a mentee and
         // Don't show other mentors if logged in as a mentor
-        if ($canViewChildren):
+        // Don't bother for coordinators, they have the nice table views now
+        if ($canViewChildren && ($myRoletypeId != COORDINATOR)):
             ?>	
 	<div class="related">
             
@@ -218,21 +222,42 @@
         ?></h3>
         <?php if (!empty($user['ChildUser'])):?>	
 	<table cellpadding = "0" cellspacing = "0">
-	<tr>                
-                <?php //echo $this->element('Users/active', array('view' => 'list_header')); ?>
-                <th><?php echo __('Name'); ?></th>
-	</tr>
 	<?php
+                if ($myRoletypeId <= COORDINATOR) {
+                    $mentor_view_type = 'view';
+                } else {
+                    $mentor_view_type = 'view_profile';
+                }
 		$i = 0;
 		foreach ($user['ChildUser'] as $childUser): ?>
 		<tr>
                        <?php //echo $this->element('Users/active', array('view' => 'list_detail', 'user' => $childUser )); ?>
-                        <td><?php echo $this->Html->link($childUser['name'], array('controller' => 'users', 'action' => 'view', $childUser['id'])); ?></td>
+                        <td><?php echo $this->Html->link($childUser['name'], array('controller' => 'users', 'action' => 'view', $childUser['id'])); ?>
+                            <?php if ($childUser['second_mentor_id'] > 0) {
+                                echo '(Additional mentor: ' . 
+                                        $this->Html->link($childUser['second_mentor_name'], array('controller' => 'users', 'action' => $mentor_view_type, $childUser['second_mentor_id']))  . ')';
+                            } 
+                            ?>
+                        </td>
 		</tr>
 	<?php endforeach; ?>
 	</table>
-<?php endif; ?>
+        <?php endif; ?>
 
+        <?php if (!empty($user['SecondMentorFor'])):?>	
+	<table cellpadding = "0" cellspacing = "0">
+	<?php
+		$i = 0;
+		foreach ($user['SecondMentorFor'] as $childUser): ?>
+		<tr>
+                       <?php //echo $this->element('Users/active', array('view' => 'list_detail', 'user' => $childUser )); ?>
+                        <td><?php echo $this->Html->link($childUser['name'], array('controller' => 'users', 'action' => 'view', $childUser['id']) ) . ' (Primary mentor: ' . 
+                                $this->Html->link($childUser['mentor_name'], array('controller' => 'users', 'action' => $mentor_view_type, $childUser['parent_id'])) . ')'; ?></td>
+		</tr>
+	<?php endforeach; ?>
+	</table>
+        <?php endif; ?>
+            
 </div> <?php // class ="related" ?>
 <?php endif; ?>
 

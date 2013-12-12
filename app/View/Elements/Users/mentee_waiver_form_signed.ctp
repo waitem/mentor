@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -9,14 +9,12 @@
  */
 
     if ($view == 'edit') {            
-        echo '<div class="showHideDate">';
-        echo $this->Form->input('MenteeExtraInfo.waiver_form_signed', array('label' => 'Waiver Form signed'));
+        //echo $this->Form->input('MenteeExtraInfo.waiver_form_signed', array('label' => 'Waiver Form signed'));
         echo $this->Form->input('MenteeExtraInfo.date_waiver_form_signed',
                 array(
                     'class'=>'datepicker', 
                     'type'=>'text'
                  ));
-        echo '</div>';
     } elseif (in_array($view, array('view', 'list_header', 'list_detail'))) {
         if (in_array($view, array('view', 'list_header'))) {
             echo '<' . $htmlHeader . '>' ;
@@ -29,7 +27,7 @@
         }
         if (in_array($view, array('view', 'list_detail'))) {
             echo '<' . $htmlDetail . '>' ;
-            if ($user['MenteeExtraInfo']['waiver_form_signed'] == 1) {
+            if (strlen($user['MenteeExtraInfo']['date_waiver_form_signed']) ) {
                 echo h($this->Custom->longDate($user['MenteeExtraInfo']['date_waiver_form_signed']));
             } else {
                 echo 'Not yet';

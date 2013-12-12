@@ -19,7 +19,7 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  * 
- * This version: Copyright (c) 2012 Mark Waite
+ * This version: Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -41,6 +41,10 @@ App::uses('Model', 'Model');
 class AppModel extends Model {
       
     public function dateNotInFuture($data, $field) {
+            // Make sure that when converting the date entered in the form to a time
+            // that we use the user's timezone
+    		App::uses('CakeSession', 'Model/Datasource');
+            date_default_timezone_set(CakeSession::read('Auth.User.timezone'));
             if (strtotime( $data[$field]) < time() ) {
                 return true;
             } else {
@@ -49,6 +53,10 @@ class AppModel extends Model {
     }
     
     public function dateNotInPast($data, $field) {
+            // Make sure that when working out when midnight today is
+            // that we use the user's timezone
+    		App::uses('CakeSession', 'Model/Datasource');
+    		date_default_timezone_set(CakeSession::read('Auth.User.timezone'));            
             if (strtotime( $data[$field]) >= strtotime(date('Y-m-d')) ) {
                 return true;
             } else {
@@ -76,5 +84,22 @@ class AppModel extends Model {
             $this->invalidate($checkbox_field, $message );
         }
         return true;
+    }
+
+    /*
+     * Used by the AuditLog plugin to track changes made to models
+     * which have enabled the AuditLog behavior through "ActsAs"
+     * Returns an array with an id key of the current user
+     */
+    public function currentUser() {
+                
+        return array( 'id' => AuthComponent::user('id'));
+
+    }
+    
+    public function currentTenant() {
+                
+        return array( 'id' => AuthComponent::user('tenant_id'));
+
     }
 }

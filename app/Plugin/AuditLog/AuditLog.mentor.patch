@@ -1,0 +1,55 @@
+diff --git a/app/Plugin/AuditLog/Model/Behavior/AuditableBehavior.php b/app/Plugin/AuditLog/Model/Behavior/AuditableBehavior.php
+index 748ad46..0d4bced 100644
+--- a/app/Plugin/AuditLog/Model/Behavior/AuditableBehavior.php
++++ b/app/Plugin/AuditLog/Model/Behavior/AuditableBehavior.php
+@@ -125,6 +125,9 @@ class AuditableBehavior extends ModelBehavior {
+     } else if ( $Model->hasMethod( 'current_user' ) ) {
+       $source = $Model->current_user();
+     }
++	if( $Model->hasMethod( 'currentTenant' ) ) {
++    	$tenant = $Model->currentTenant();
++	}
+     
+     $data = array(
+       'Audit' => array(
+@@ -133,6 +136,7 @@ class AuditableBehavior extends ModelBehavior {
+         'entity_id' => $Model->id,
+         'json_object' => json_encode( $audit ),
+         'source_id' => isset( $source['id'] ) ? $source['id'] : null,
++      	'tenant_id'   => isset( $tenant['id'] ) ? $tenant['id'] : null,
+         'description' => isset( $source['description'] ) ? $source['description'] : null,
+       )
+     );
+@@ -146,6 +150,14 @@ class AuditableBehavior extends ModelBehavior {
+       $delta = array();
+ 
+       /*
++       * Catch the user_id field, if one exists
++      */
++      if ($property == 'user_id' ||
++      		($Model->alias == 'User' && $property == 'id')
++      ) {
++      	$data['Audit']['user_id'] = $value;
++      }
++      /*
+        * Ignore virtual fields (Cake 1.3+) and specified properties
+        */
+       if( ( $Model->hasMethod( 'isVirtualField' ) && $Model->isVirtualField( $property ) )
+@@ -243,6 +255,9 @@ class AuditableBehavior extends ModelBehavior {
+     } else if ( $Model->hasMethod( 'current_user' ) ) {
+       $source = $Model->current_user();
+     }
++    if( $Model->hasMethod( 'currentTenant' ) ) {
++    	$tenant = $Model->currentTenant();
++    }
+     
+     $audit = array( $Model->alias => $this->_original[$Model->alias] );
+     $data  = array(
+@@ -252,6 +267,7 @@ class AuditableBehavior extends ModelBehavior {
+         'entity_id'   => $Model->id,
+         'json_object' => json_encode( $audit ),
+         'source_id'   => isset( $source['id'] ) ? $source['id'] : null,
++      	'tenant_id'   => isset( $tenant['id'] ) ? $tenant['id'] : null,
+         'description' => isset( $source['description'] ) ? $source['description'] : null,
+       )
+     );

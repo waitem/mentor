@@ -21,14 +21,21 @@ ENGINE = InnoDB;
 CREATE  TABLE IF NOT EXISTS `users` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `active` TINYINT(1) NULL ,
+  `user_status_id` INT NULL ,
   `tenant_id` INT NOT NULL ,
   `roletype_id` INT NULL ,
   `parent_id` INT NULL ,
+  `second_mentor_id` INT NULL ,
   `email` VARCHAR(255) NULL ,
   `password` VARCHAR(50) NULL ,
   `first_name` VARCHAR(255) NULL ,
   `last_name` VARCHAR(255) NULL ,
   `phone_number` VARCHAR(255) NULL ,
+  `timezone` VARCHAR(255) NULL ,
+  `last_password_change` INT NULL ,
+  `last_password_reset` INT NULL ,
+  `last_login` INT NULL ,
+  `last_logout` INT NULL ,
   `created` DATETIME NULL ,
   `modified` DATETIME NULL ,
   PRIMARY KEY (`id`) )
@@ -85,15 +92,16 @@ CREATE  TABLE IF NOT EXISTS `mentee_extra_info` (
   `date_joined` DATE NULL ,
   `company_name` VARCHAR(100) NULL ,
   `company_web_site` VARCHAR(100) NULL ,
-  `additional_info` VARCHAR(500) NULL ,
+  `additional_info` TEXT NULL ,
   `statement_of_purpose_sent` TINYINT(1) NULL ,
   `date_statement_of_purpose_sent` DATE NULL ,
   `waiver_form_signed` TINYINT(1) NULL ,
   `date_waiver_form_signed` DATE NULL ,
   `signed_on_to_chamber` TINYINT(1) NULL ,
-  `date_signed_on_to_chamber` DATETIME NULL ,
+  `date_signed_on_to_chamber` DATE NULL ,
   `invoiced` TINYINT(1) NULL ,
   `date_invoiced` DATE NULL ,
+  `invoice_number` VARCHAR(45) NULL ,
   `payment_received` TINYINT(1) NULL ,
   `date_payment_received` DATE NULL ,
   `coordinator_invoice_sent` TINYINT(1) NULL ,
@@ -187,6 +195,99 @@ CREATE  TABLE IF NOT EXISTS `user_addresses` (
   `suburb` VARCHAR(100) NULL ,
   `state` VARCHAR(30) NULL ,
   `postcode` VARCHAR(10) NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `email_configs`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `email_configs` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `tenant_id` INT NOT NULL ,
+  `name` VARCHAR(45) NULL ,
+  `from_email` VARCHAR(45) NULL ,
+  `from_name` VARCHAR(45) NULL ,
+  `sender_email` VARCHAR(45) NULL ,
+  `sender_name` VARCHAR(45) NULL ,
+  `host_name` VARCHAR(45) NULL ,
+  `host_port` INT NULL ,
+  `host_username` VARCHAR(45) NULL ,
+  `host_password` VARCHAR(45) NULL ,
+  `tested` TINYINT(1) NULL ,
+  `created` DATETIME NULL ,
+  `modified` DATETIME NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
+  UNIQUE INDEX `tenant_id_UNIQUE` (`tenant_id` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `audits`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `audits` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `tenant_id` INT NULL ,
+  `event` VARCHAR(255) NOT NULL ,
+  `model` VARCHAR(255) NOT NULL ,
+  `entity_id` INT NOT NULL ,
+  `json_object` TEXT NOT NULL ,
+  `source_id` INT NULL DEFAULT NULL ,
+  `user_id` INT NULL COMMENT 'If a user_id in the affected record, then record it here' ,
+  `created` INT(11) NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `audit_deltas`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `audit_deltas` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `audit_id` INT NOT NULL ,
+  `property_name` VARCHAR(255) NOT NULL ,
+  `old_value` TEXT NULL DEFAULT NULL ,
+  `new_value` TEXT NULL DEFAULT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `audit_id` (`audit_id` ASC) )
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `user_statuses`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `user_statuses` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `number` INT NOT NULL ,
+  `name` VARCHAR(45) NOT NULL ,
+  `active` TINYINT(1) NULL COMMENT 'Whether the user is active or not in this status\nInactive users cannot log in\nInactive mentees cannot be seen by a mentor' ,
+  `roletype_id` INT NOT NULL COMMENT 'The roletype that this user_status can apply to' ,
+  `created` INT NULL ,
+  `modified` INT NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
+  INDEX `value` (`number` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `invoices`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `invoices` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `tenant_id` INT NULL ,
+  `invoice_number` VARCHAR(45) NULL ,
+  `user_id` INT NOT NULL ,
+  `date_invoiced` DATE NOT NULL COMMENT '	' ,
+  `description` VARCHAR(200) NULL ,
+  `date_payment_received` DATE NULL ,
+  `total_amount` DECIMAL(10,2) NULL ,
+  `created` INT NULL ,
+  `modified` INT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
 ENGINE = InnoDB;

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -16,10 +16,13 @@
                 echo $this->Form->input('MenteeExtraInfo.id');
                 echo $this->Form->input('MenteeExtraInfo.where_did_they_hear_about_us');
         } elseif (in_array($view, array('view'))) {
-            echo '<dt>' . __('Heard about us from') . '</dt>';
-            echo '<dd>' ;
+        	echo '<' . $htmlHeader . '>' ;
+            echo __('Heard about us from');
+            echo '</' . $htmlHeader . '>' ;
+            echo '<' . $htmlDetail . '>' ;
             echo h($user['MenteeExtraInfo']['where_did_they_hear_about_us']);
-            echo '&nbsp' . '</dd>';
+            echo '&nbsp';
+            echo '</' . $htmlDetail . '>' ;
         } else {
             echo "Hmmm, not sure what I should be showing here. Please fix Elements/Users/mentee_hear_about.ctp";
         }

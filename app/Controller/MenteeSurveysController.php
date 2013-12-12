@@ -3,7 +3,7 @@ App::uses('AppController', 'Controller');
 /**
  * MenteeSurveys Controller
  * 
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -20,7 +20,7 @@ class MenteeSurveysController extends AppController {
  * @var array
  */
 
-        var $helpers = array('Form', 'Html', 'Text', 'Custom');
+        public $helpers = array('Form', 'Html', 'Text', 'Custom');
         
         public $paginate = array(
             // other keys here.

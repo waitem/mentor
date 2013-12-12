@@ -3,7 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * UserAddress Model
  * 
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -14,6 +14,12 @@ App::uses('AppModel', 'Model');
  */
 class UserAddress extends AppModel {
 
+    public $actsAs = array(
+            'AuditLog.Auditable' => array(
+               'ignore' => array( 'modified', 'created' )
+            )
+        );
+
 /**
  * Validation rules
  *
@@ -22,10 +28,20 @@ class UserAddress extends AppModel {
 	public $validate = array(
 		'postcode' => array(
 			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+                                'rule' => array('custom', '/^[0-9]{4}$/'),
+                                'message' => 'Please enter a valid postcode',
 				'allowEmpty' => true,
 				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+                'recover_account_postcode' => array(
+			'numeric' => array(
+				'rule' => array('custom', '/^[0-9]{4}$/'),
+				'message' => 'Please enter a valid postcode',
+				'allowEmpty' => false,
+				//'required' => true,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),

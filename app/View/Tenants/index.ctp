@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -54,5 +54,6 @@
 	<ul>
                 <?php echo '<li>' . $this->Html->link(__('Dashboard'), array('controller' => 'users', 'action' => 'dashboard')) . '</li>'; ?>
 		<li><?php echo $this->Html->link(__('New Tenant'), array('action' => 'add')); ?></li>
+                <li><?php echo $this->Html->link(__('Configure E-mail'), array('controller' => 'tenants', 'action' => 'email_config')); ?></li>
 	</ul>
 </div>

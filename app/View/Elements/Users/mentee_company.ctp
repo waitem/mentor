@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -19,16 +19,24 @@
                 echo $this->Form->input('MenteeExtraInfo.company_name');
                 echo $this->Form->input('MenteeExtraInfo.company_web_site', array('label' => 'Company Web Site (without the "http://" bit)'));
         } elseif (in_array($view, array('view'))) {
-            echo '<dt>' . __('Company name') . '</dt>';
-            echo '<dd>' ;
+        	echo '<' . $htmlHeader . '>' ;
+            echo __('Company name') ;
+            echo '</' . $htmlHeader . '>' ;
+            echo '<' . $htmlDetail . '>' ;
             echo h($user['MenteeExtraInfo']['company_name']);
-            echo '&nbsp' . '</dd>';
-            echo '<dt>' . __('Web site') . '</dt>';
-            echo '<dd>' ;
+            echo '&nbsp' ;
+            echo '</' . $htmlDetail . '>' ;
+            echo '</' . $htmlRow . '>' ;
+            echo '<' . $htmlRow . '>' ;
+            echo '<' . $htmlHeader . '>' ;
+            echo __('Web site');
+            echo '</' . $htmlHeader . '>' ;
+            echo '<' . $htmlDetail . '>' ;
             if (strlen($user['MenteeExtraInfo']['company_web_site']) > 0) {
                 echo $this->Text->autoLinkUrls('http://' . $user['MenteeExtraInfo']['company_web_site'], array('target' => '_blank'));                
             }
-            echo '&nbsp' . '</dd>';
+            echo '&nbsp';
+            echo '</' . $htmlDetail . '>' ;
         } else {
             echo "Hmmm, not sure what I should be showing here. Please fix Elements/Users/mentee_company.ctp";
         }

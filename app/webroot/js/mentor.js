@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  *
  * Author(s): See AUTHORS.txt
  * 
@@ -14,9 +14,33 @@ $(document).ready(function() {
     }); 
     
     //<div id="flashMessage" class="success">Your details have been updated</div>
-    $("div#flashMessage").each(function() {
+    $('div#flashMessage').each(function() {
         if ($(this).hasClass('success')) {
-            $(this).delay(1500).hide(500);
+            //$(this).delay(1500).hide(500);
+        	var dialogTimeout;
+        	$(this).dialog({
+        	    autoOpen: true,
+        	    //show: "blind",
+        	    hide: "clip",
+        	    modal: true,
+        	    title: "Details updated",
+        	    dialogClass: "successDialog",
+        	    buttons: {
+        	          Ok: function() {
+        	        	  clearTimeout( dialogTimeout );
+        	            $( this ).dialog( "close" );
+        	          }
+        	        },
+        	    open: function(event, ui) {
+        	    	/*
+        	    	jQuery.each( event.target, function( key, value) {
+        	    		alert( key + ": " + value );
+        	    	}); */
+        	        dialogTimeout = setTimeout(function(){
+        	            $('div#flashMessage').dialog('close');                
+        	        }, 5000);
+        	    }
+        	});
         }
     });
 });

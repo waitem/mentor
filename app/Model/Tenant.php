@@ -3,7 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * Tenant Model
  * 
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -13,6 +13,13 @@ App::uses('AppModel', 'Model');
  * @property User $User
  */
 class Tenant extends AppModel {
+    
+    public $actsAs = array(
+            'AuditLog.Auditable' => array(
+               'ignore' => array( 'modified', 'created' )
+            )
+        );
+
 /**
  * Display field
  *
@@ -35,6 +42,16 @@ class Tenant extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+                'SendTestEmailTo' => array(
+                        'email' => array(
+                                'rule' => array('email'),
+                                'message' => 'Please enter a valid e-mail address',
+				'allowEmpty' => false,
+				//'required' => false,
+				'last' => true, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+                    ),
 	);
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -59,5 +76,14 @@ class Tenant extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+        public $hasOne = array(
+		'EmailConfig' => array(
+			'className' => 'EmailConfig',
+			'foreignKey' => 'tenant_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+        );
 
 }

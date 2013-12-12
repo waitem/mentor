@@ -3,7 +3,7 @@ App::uses('AppController', 'Controller');
 /**
  * UserExpenseClaims Controller
  * 
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -15,7 +15,7 @@ App::uses('AppController', 'Controller');
  */
 class UserExpenseClaimsController extends AppController {
 
-        var $helpers = array('Form', 'Html', 'Text', 'Custom', 'Number');
+        public $helpers = array('Form', 'Html', 'Text', 'Custom', 'Number');
         
         public $paginate = array(
             // other keys here.

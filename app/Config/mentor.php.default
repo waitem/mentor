@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -26,7 +26,7 @@ Configure::write('google-analytics.tracker-code', false); // disables Google Ana
  * Don't change anything below this ...
  */
 
-$good_cake_versions = array( '2.2.1', '2.2.4');
+$good_cake_versions = array('2.4.3');
 Configure::write('Mentor.good_cake_versions', $good_cake_versions);
 
 $app_version = file_get_contents( ROOT. DS . APP_DIR . DS . 'VERSION.txt');
@@ -37,8 +37,14 @@ Configure::write('Mentor.version', $app_version);
  */
 Configure::write('Session', array(
         'cookie' => 'itmad_sess',
-        // Timeout the session after 5 minutes (if no activity) for security reasons
-        //'timeout' => 5,
+        // Timeout the session after x minutes of no activity for security reasons
+        'timeout' => 60,
+        // The cookie in the browser will expire when the user closes the browser
+        // We have to set it to something, otherwise it will default to the above value
+        // and expire after x minutes from the beginning of the session
+        // resulting in the user having to log back in to their session
+        // even if they have been active - only the session timeout is updated, not the cookie
+        'cookieTimeout' => 0,
         'defaults' => 'database'
 ));
         

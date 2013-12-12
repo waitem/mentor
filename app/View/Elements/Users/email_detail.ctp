@@ -1,13 +1,13 @@
 <?php
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  */
-    if (in_array($view, array('dashboard', 'view'))) {
+    if (in_array($view, array('dashboard', 'view', 'list_users'))) {
         echo "<$htmlType>";
         echo $user['User']['email'] . ' ' . $this->Html->link('E', 'mailto:' . $user['User']['email'], 
                 // if opening in browser (e.g. chrome) then open in a new window

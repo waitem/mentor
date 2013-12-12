@@ -21,7 +21,7 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  * 
  * 
- * This version: Copyright (c) 2012 Mark Waite
+ * This version: Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -59,7 +59,8 @@ class AppController extends Controller {
                     'fields'=>array('username'=>'email')
                 )
             )
-        )
+        ),
+    	'RequestHandler'
     );
     
     // This determines which screens / functions a user is authorised
@@ -69,8 +70,14 @@ class AppController extends Controller {
         return false;
     }
     
+    // This is called before every action in every controller (unless overridden by 
+    // controller's own beforeFilter)
     public function beforeFilter() {
 
+        // Allow anyone to have access to the recover_account action in the Users controller
+        if ($this->name == 'Users') {
+            $this->Auth->allow('recover_account');
+        }
         if ($this->Session->check('Roletype.name')) {
             $this->set('myRoletypeName', $this->Session->read('Roletype.name'));
         }
@@ -80,7 +87,7 @@ class AppController extends Controller {
         if ($this->Session->check('Auth.User.id')) {
             $this->set('myUserId', $this->Session->read('Auth.User.id'));
         }
-        
     }
+
 
 }

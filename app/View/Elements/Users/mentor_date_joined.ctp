@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012 Mark Waite
+ * Copyright (c) 2012-2013 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -18,18 +18,26 @@
                 );
     } elseif (in_array($view, array('view', 'list_header', 'list_detail'))) {
         if (in_array($view, array('view', 'list_header'))) {
-            echo '<' . $htmlHeader . '>' ;
+        	if (! empty($htmlHeader)) {
+            	echo '<' . $htmlHeader . '>' ;
+        	}
             if ( $view == 'view') {
                 echo __('Date Joined') ;    
             } else {
                 echo $this->Paginator->sort( 'MentorExtraInfo.date_joined', __('Date joined'));    
             }
-            echo '</' . $htmlHeader . '>' ;      
+            if (! empty($htmlHeader)) {
+            	echo '</' . $htmlHeader . '>' ;
+            }      
         }
         if (in_array($view, array('view', 'list_detail'))) {
-            echo '<' . $htmlDetail . '>' ;
+        	if (! empty($htmlDetail)) {
+            	echo '<' . $htmlDetail . '>' ;
+        	}
             echo h($this->Custom->longDate( $user['MentorExtraInfo']['date_joined'])) . ' &nbsp';
-            echo '</' . $htmlDetail . '>' ;
+            if (! empty($htmlDetail)) {
+            	echo '</' . $htmlDetail . '>' ;
+            }
         }
     } else {
         echo "Hmmm, not sure what I should be showing here. Please fix Elements/Users/mentor_date_joined.ctp";
