@@ -7,7 +7,7 @@
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  */
-    if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) ) ) {
+    if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator', 'Mentor' ) ) ) {
         if (in_array($view, array('edit'))) {
             echo '<div class="showHideDate">';
             echo $this->Form->input('MenteeExtraInfo.invoiced', array('label' => 'Mentee invoice sent'));
