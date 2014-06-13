@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012-2013 Mark Waite
+ * Copyright (c) 2012-2014 Mark Waite
 *
 * Author(s): See AUTHORS.txt
 *
@@ -304,8 +304,10 @@
 		<?php $person =  $user['User']['first_name'] . '\'s'; ?>
 		<li><?php echo $this->Html->link( 'View ' . $person . ' details', array('action' => 'view', $user['User']['id'])); ?>
 		</li>
+		<?php if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) ) ) :?>
 		<li><?php echo $this->Html->link( 'Reset ' . $person . ' password', array('action' => 'reset_password', $user['User']['id'])); ?>
 		</li>
+		<?php endif; // in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) )  ?>
 		<?php endif; // $this->action == 'edit' ?>
 		<?php endif; // $this->action == 'edit' ?>
 		<?php echo $this->element('Users/admin_actions'); ?>

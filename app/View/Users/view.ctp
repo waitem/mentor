@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2012-2013 Mark Waite
+ * Copyright (c) 2012-2014 Mark Waite
  * 
  * Author(s): See AUTHORS.txt
  * 
@@ -180,9 +180,12 @@
                     echo '<li>' . $this->Html->link(__('Edit') . ' ' . $user['User']['first_name'] . '\'s details', 
                         array('action' => 'edit', $user['User']['id'])) . '</li>';
                     // Only allow password to be reset for active users
+                    // and by coordinators or above
+                    if (in_array( $myRoletypeName, array( 'Superadmin', 'Admin', 'Coordinator' ) ) ) {
                     if ($user['User']['active']) {
                         echo '<li>' . $this->Html->link(__('Reset') . ' ' . $user['User']['first_name'] . '\'s password', 
                             array('action' => 'reset_password', $user['User']['id'])) . '</li>';                       
+                    }
                     }
                 }
             ?>

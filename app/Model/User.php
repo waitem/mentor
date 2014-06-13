@@ -3,7 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * User Model
  *
- * Copyright (c) 2012-2013 Mark Waite
+ * Copyright (c) 2012-2014 Mark Waite
  *
  * Author(s): See AUTHORS.txt
  *
@@ -323,6 +323,11 @@ class User extends AppModel {
             if ($action == 'reset_password') {
                 if ($myUserId == $userId || $userDetails['User']['active'] == false) {
                         return false;
+                // but let Coordinators and Admins reset passwords
+                } elseif (in_array($myRoletypeName, array( 'Coordinator', 'Admin') )) {
+                	return true;
+                } else {
+                	return false;
                 }
             }
 
@@ -345,7 +350,7 @@ class User extends AppModel {
                        } elseif ( $myRoletypeId <= $userDetails['Roletype']['id'] ) {
                            return true;
                        }
-            // Mentors can edit, view, change_password their mentees
+            // Mentors can edit and view their mentees
             }  elseif ($myRoletypeName == 'Mentor' &&
                         $myTenantId == $userDetails['User']['tenant_id'] &&
                         $userDetails['User']['active'] == 1 &&

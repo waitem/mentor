@@ -1,3 +1,13 @@
+<?php
+/*
+ * Copyright (c) 2012-2014 Mark Waite
+ * 
+ * Author(s): See AUTHORS.txt
+ * 
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ */
+?>
 <div class="emailConfigs form">
 <?php echo $this->Form->create('EmailConfig'); ?>
 	<fieldset>

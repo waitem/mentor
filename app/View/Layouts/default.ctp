@@ -15,7 +15,7 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
- * This version: Copyright (c) 2012-2013 Mark Waite
+ * This version: Copyright (c) 2012-2014 Mark Waite
  *
  * Author(s): See AUTHORS.txt
  *
@@ -54,7 +54,7 @@ echo $scripts_for_layout;
 ?>
 </head>
 <body>
-	<!-- This software program is Copyright (c) 2012-2013 Mark Waite  -->
+	<!-- This software program is Copyright (c) 2012-2014 Mark Waite  -->
 	<div id="container">
 		<div id="header" class="left">
 			<h1><?php 
@@ -100,7 +100,7 @@ echo $scripts_for_layout;
 			echo ' ';
 			echo 'version ' . Configure::read('Mentor.version');;
 			echo ' | ';
-			echo __('Copyright (c) 2012-2013 Mark Waite');
+			echo __('Copyright (c) 2012-2014 Mark Waite');
 			echo ' | ';
 			echo $this->Html->link('Terms of Use', array('controller'=>'pages','action'=>'terms_of_use'), array('target' => '_blank'));
 			?>
