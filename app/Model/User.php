@@ -323,8 +323,8 @@ class User extends AppModel {
             if ($action == 'reset_password') {
                 if ($myUserId == $userId || $userDetails['User']['active'] == false) {
                         return false;
-                // but let Coordinators and Admins reset passwords
-                } elseif (in_array($myRoletypeName, array( 'Coordinator', 'Admin') )) {
+                // but let Coordinators, Admins and Superadmins reset passwords
+                } elseif (in_array($myRoletypeName, array( 'Coordinator', 'Admin', 'Superadmin') )) {
                 	return true;
                 } else {
                 	return false;

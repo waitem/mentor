@@ -100,7 +100,7 @@ echo $scripts_for_layout;
 			echo ' ';
 			echo 'version ' . Configure::read('Mentor.version');;
 			echo ' | ';
-			echo __('Copyright (c) 2012-2014 Mark Waite');
+			echo 'Copyright (c) 2012-2015 Mark Waite';
 			echo ' | ';
 			echo $this->Html->link('Terms of Use', array('controller'=>'pages','action'=>'terms_of_use'), array('target' => '_blank'));
 			?>
