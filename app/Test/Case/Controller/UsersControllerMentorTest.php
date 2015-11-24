@@ -106,7 +106,7 @@ class UsersControllerMentorTest extends ControllerTestCase {
             		$this->contents,
             		'Page title is incorrect - or wrong tenant?' );
             // And user
-            $this->assertContains('<a href="/mentor/users/view/' . $user_id . '">' . $user_name . '</a>', $this->contents );
+            $this->assertContains('<a href="/users/view/' . $user_id . '">' . $user_name . '</a>', $this->contents );
 
         }
 
@@ -178,7 +178,7 @@ class UsersControllerMentorTest extends ControllerTestCase {
         	
         	if (is_string($this->contents)) {
         		$this->assertContains(
-        				$first_name . '\'s details could not be updated',
+        				$user_data['User']['first_name'] . '\'s details could not be updated',
         				$this->contents,
         				$error_message
         		) ;

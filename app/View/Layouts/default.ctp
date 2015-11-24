@@ -15,7 +15,7 @@
  * @since         CakePHP(tm) v 0.10.0.1076
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
- * This version: Copyright (c) 2012-2014 Mark Waite
+ * This version: Copyright (c) 2012-2015 Mark Waite
  *
  * Author(s): See AUTHORS.txt
  *
@@ -54,7 +54,7 @@ echo $scripts_for_layout;
 ?>
 </head>
 <body>
-	<!-- This software program is Copyright (c) 2012-2014 Mark Waite  -->
+	<!-- This software program is Copyright (c) 2012-2015 Mark Waite  -->
 	<div id="container">
 		<div id="header" class="left">
 			<h1><?php 

@@ -17,7 +17,7 @@
  * @since         CakePHP(tm)
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  *
- * This version: Copyright (c) 2012-2014 Mark Waite
+ * This version: Copyright (c) 2012-2015 Mark Waite
  *
  * Author(s): See AUTHORS.txt
  * 
@@ -515,9 +515,9 @@ form .error {
     font-weight: normal;
 }
 form .error-message {
-    -moz-border-radius: none;
-    -webkit-border-radius: none;
-    border-radius: none;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
     border: none;
     background: none;
     margin: 0;

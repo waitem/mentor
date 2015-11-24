@@ -2,7 +2,7 @@
 /* /app/View/Helper/CustomHelper.php (using other helpers) */
 
 /*
- * Copyright (c) 2012-2014 Mark Waite
+ * Copyright (c) 2012-2015 Mark Waite
  */
 
 App::uses('AppHelper', 'View/Helper');

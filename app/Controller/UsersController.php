@@ -6,7 +6,7 @@ App::uses('CakeEmail', 'Network/Email');
 /**
  * Users Controller
  *
- * Copyright (c) 2012-2014 Mark Waite
+ * Copyright (c) 2012-2015 Mark Waite
  *
  * Author(s): See AUTHORS.txt
  *
@@ -162,7 +162,7 @@ class UsersController extends AppController {
 				if (!strlen($user_timezone)) {
 					$this->Session->write('Auth.User.timezone', 'Australia/Brisbane');
 				} else {
-					$this->Session->write('Auth.User.timezone', $timezone);
+					$this->Session->write('Auth.User.timezone', $user_timezone);
 				}
 				// Get the users' grandparent (i.e. mentee's coordinator
 				$parent_id = $this->Session->read('Auth.User.parent_id');

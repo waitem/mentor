@@ -18,10 +18,11 @@ It also uses jquery:
 https://github.com/jquery
 https://github.com/jquery/jquery-ui/blob/master/MIT-LICENSE.txt
 
-For installation instructions, see INSTALL.txt
+For installation instructions, see INSTALL.md
 
 If you wish to contribute to this project, please contact:
-    Mark dot Waite at noosachamber dot com dot au
+    Mark dot Waite at bmn dot org dot au
 
-Noosa Chamber of Commerce Business Mentors
+Business Mentoring Noosa
+in association with CCIQ Noosa (Noosa Chamber of Commerce)
 18th July 2012

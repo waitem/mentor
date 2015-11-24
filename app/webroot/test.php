@@ -29,7 +29,9 @@ ini_set('display_errors', 1);
  * a directory layout other than the way it is distributed.
  * When using custom settings be sure to use the DS and do not add a trailing DS.
  */
-
+if ($_SERVER["SCRIPT_FILENAME"] === '/vagrant/app/webroot/test.php') {
+    define('TMP', DS . 'tmp' . DS . 'cakephp' . DS);
+}
 /**
  * The full path to the directory which holds "app", WITHOUT a trailing DS.
  *

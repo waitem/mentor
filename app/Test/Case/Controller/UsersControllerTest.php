@@ -163,7 +163,7 @@ class UsersControllerTest extends ControllerTestCase {
             		'Page title is incorrect' );            
             
             // And user
-            $this->assertContains('<a href="/mentor/users/view/1">Superadmin1 Tenant1</a>', $this->contents );
+            $this->assertContains('<a href="/users/view/1">Superadmin1 Tenant1</a>', $this->contents );
             debug($this->contents);
             
             $result = $this->testAction('/users/logout', array( 'return' => 'view', 'method' => 'get'));
@@ -278,7 +278,7 @@ class UsersControllerTest extends ControllerTestCase {
             		'Page title is incorrect' );
             
             // And user
-            $this->assertContains('<a href="/mentor/users/view/3">Admin2 Tenant1</a>', $this->contents );
+            $this->assertContains('<a href="/users/view/3">Admin2 Tenant1</a>', $this->contents );
             debug($this->contents);
             
             $result = $this->testAction('/users/logout', array( 'return' => 'view', 'method' => 'get'));            
@@ -340,7 +340,7 @@ class UsersControllerTest extends ControllerTestCase {
             		'Page title is incorrect' );
 
             // And user
-            $this->assertContains('<a href="/mentor/users/view/4">Admin1 Tenant2</a>', $this->contents );
+            $this->assertContains('<a href="/users/view/4">Admin1 Tenant2</a>', $this->contents );
             debug($this->contents);
             
             $result = $this->testAction('/users/logout', array( 'return' => 'view', 'method' => 'get'));            
@@ -378,7 +378,7 @@ class UsersControllerTest extends ControllerTestCase {
             		'Page title is incorrect' );
 
             // And user
-            $this->assertContains('<a href="/mentor/users/view/4">Admin1 Tenant2</a>', $this->contents );
+            $this->assertContains('<a href="/users/view/4">Admin1 Tenant2</a>', $this->contents );
             debug($this->contents);
             
             $result = $this->testAction('/users/logout', array( 'return' => 'view', 'method' => 'get'));            
@@ -417,7 +417,7 @@ class UsersControllerTest extends ControllerTestCase {
             		'Other admin from same tenant should be shown' );
 
             // And link to "my" details
-            $this->assertContains('<a href="/mentor/users/view/5">Admin2 Tenant2</a>', $this->contents );
+            $this->assertContains('<a href="/users/view/5">Admin2 Tenant2</a>', $this->contents );
             debug($this->contents);
             
             $result = $this->testAction('/users/logout', array( 'return' => 'view', 'method' => 'get'));            

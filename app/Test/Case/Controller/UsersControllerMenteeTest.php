@@ -106,7 +106,7 @@ class UsersControllerMenteeTest extends ControllerTestCase {
             		$this->contents,
             		'Page title is incorrect - or wrong tenant?' );
             // And user
-            $this->assertContains('<a href="/mentor/users/view/' . $user_id . '">' . $user_name . '</a>', $this->contents );
+            $this->assertContains('<a href="/users/view/' . $user_id . '">' . $user_name . '</a>', $this->contents );
 
         }
 

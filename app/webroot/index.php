@@ -58,6 +58,10 @@
  */
 	//define('CAKE_CORE_INCLUDE_PATH', ROOT . DS . 'lib');
 
+if ($_SERVER["SCRIPT_FILENAME"] === '/vagrant/app/webroot/index.php') {
+    define('TMP', DS . 'tmp' . DS . 'cakephp' . DS);
+}
+
 /**
  * Editing below this line should NOT be necessary.
  * Change at your own risk.
