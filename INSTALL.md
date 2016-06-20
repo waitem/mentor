@@ -1,4 +1,4 @@
- Installation instructions
+# Installation instructions
 
 ## Install PHP and necessary modules
 
