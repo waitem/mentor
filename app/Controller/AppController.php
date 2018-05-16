@@ -74,6 +74,13 @@ class AppController extends Controller {
     // controller's own beforeFilter)
     public function beforeFilter() {
 
+//        TODO: test if the following works ...
+//        Inspired by: http://discourse.cakephp.org/t/redirect-to-https/1412/8
+        if ( !$this->request->is('ssl') ){
+            $schema = 'https://';
+            $this->redirect( $schema . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+        }
+
         // Allow anyone to have access to the recover_account action in the Users controller
         if ($this->name == 'Users') {
             $this->Auth->allow('recover_account');

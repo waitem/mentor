@@ -37,8 +37,8 @@ class UserExpenseClaim extends AppModel {
 			),
 		),
 		'description' => array(
-			'notempty' => array(
-				'rule' => array('notempty'),
+			'notBlank' => array(
+				'rule' => array('notBlank'),
 				'message' => 'Please describe what this expense claim is for',
 				//'allowEmpty' => false,
 				//'required' => false,
