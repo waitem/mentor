@@ -26,7 +26,7 @@ Configure::write('google-analytics.tracker-code', false); // disables Google Ana
  * Don't change anything below this ...
  */
 
-$good_cake_versions = array('2.8.5', '2.9.8');
+$good_cake_versions = array('2.10.10', '2.10.11');
 Configure::write('Mentor.good_cake_versions', $good_cake_versions);
 
 $app_version = file_get_contents( ROOT. DS . APP_DIR . DS . 'VERSION.txt');
